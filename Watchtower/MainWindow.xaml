@@ -1,0 +1,75 @@
+﻿<Window x:Class="Watchtower.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
+    xmlns:ignore="http://www.ignore.com"
+    mc:Ignorable="d ignore"
+    Height="400"
+    Width="320"
+    AllowDrop="True"
+    Title="Watchtower Source Control Monitor"
+    Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid x:Name="LayoutRoot">
+
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="Drop">
+                <cmd:EventToCommand Command="{Binding DropCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="DragEnter">
+                <cmd:EventToCommand Command="{Binding DragEnterCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
+            </i:EventTrigger>
+            <i:EventTrigger EventName="DragLeave">
+                <cmd:EventToCommand Command="{Binding DragLeaveCommand, Mode=OneWay}" PassEventArgsToCommand="True" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
+        <Grid Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ListBox x:Name="RepositoriesListBox" ItemsSource="{Binding Repositories, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="24" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="Images/Repository.png" Width="48" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding Name, Mode=TwoWay}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="1" Text="{Binding Path, Mode=TwoWay}" />
+                                <TextBlock Grid.Row="2" Text="{Binding Type, Mode=TwoWay}" />
+                            </Grid>
+                            <Image Grid.Column="2" Source="Images/Delete.png" Width="24" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button Grid.Row="1" Content="Undo" Command="{Binding LoadCommand}" Width="48" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="1" Text="{Binding Status, Mode=TwoWay}" HorizontalAlignment="Center" />
+            <Button Grid.Row="1" Content="Save" Command="{Binding SaveCommand}" Width="48" HorizontalAlignment="Right" />
+        </Grid>    
+
+    </Grid>
+</Window>

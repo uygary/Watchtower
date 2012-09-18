@@ -1,0 +1,9 @@
+syntax: glob
+Watchtower/bin
+Watchtower/obj
+Watchtower.Core/bin
+Watchtower.Core/obj
+Watchtower.Mercurial/bin
+Watchtower.Mercurial/obj
+Watchtower.Installer/debug
+Watchtower.Installer/release
