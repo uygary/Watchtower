@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Watchtower.Model;
+using System.Collections.ObjectModel;
 
 namespace Watchtower
 {
@@ -13,12 +14,12 @@ namespace Watchtower
             ExtendedRepository result = new ExtendedRepository(repository.Type, repository.Path);
 
             result.Name = repository.Name;
-            result.IncomingChangesets = new List<ExtendedChangeset>();
+            result.IncomingChangesets = new ObservableCollection<ExtendedChangeset>();
             foreach (Changeset c in repository.IncomingChangesets)
             {
                 result.IncomingChangesets.Add(GetExtendedChangeset(c));
             }
-            result.OutgoingChangesets = new List<ExtendedChangeset>();
+            result.OutgoingChangesets = new ObservableCollection<ExtendedChangeset>();
             foreach (Changeset c in repository.OutgoingChangesets)
             {
                 result.OutgoingChangesets.Add(GetExtendedChangeset(c));
@@ -31,12 +32,12 @@ namespace Watchtower
             Repository result = new Repository(repository.Type, repository.Path);
 
             result.Name = repository.Name;
-            result.IncomingChangesets = new List<Changeset>();
+            result.IncomingChangesets = new ObservableCollection<Changeset>();
             foreach (ExtendedChangeset c in repository.IncomingChangesets)
             {
                 result.IncomingChangesets.Add(GetChangeset(c));
             }
-            result.OutgoingChangesets = new List<Changeset>();
+            result.OutgoingChangesets = new ObservableCollection<Changeset>();
             foreach (ExtendedChangeset c in repository.OutgoingChangesets)
             {
                 result.OutgoingChangesets.Add(GetChangeset(c));

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace Watchtower.Model
 {
@@ -11,7 +12,7 @@ namespace Watchtower.Model
         /// To be filled and used by Watchtower itself.
         /// Do not use while 
         /// </summary>
-        public Icon Gravatar { get; set; }
+        public BitmapImage Gravatar { get; set; }
 
         public string AuthorEmail { get; set; }
         public string AuthorName { get; set; }

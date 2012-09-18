@@ -49,6 +49,7 @@ namespace Watchtower.ViewModel
         {
             _dataService = dataService;
             _workerService = SimpleIoc.Default.GetInstance<WorkerService>();
+            Initialize();
         }
 
         private void Initialize()
@@ -58,7 +59,7 @@ namespace Watchtower.ViewModel
 
         private void OnIncomingChangesDetected(object sender, IncomingChangesDetectedEventArgs e)
         {
-            Repositories = new ObservableCollection<ExtendedRepository>(e.Repositories);
+            Repositories = e.Repositories;
         }
 
 

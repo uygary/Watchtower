@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Updates Found" Width="320" MinHeight="200" SizeToContent="Height"
+    Title="Updates Found" Width="320" MinHeight="200" MaxHeight="520"  SizeToContent="Height"
     WindowStyle="None" AllowsTransparency="True" Background="Transparent" Topmost="True">
     
     <Window.Resources>
@@ -27,7 +27,7 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
                 <SplineDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0.9"/>
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0.96"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
@@ -44,7 +44,7 @@
                         </DoubleAnimationUsingKeyFrames>
                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
                             <SplineDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                            <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0.9"/>
+                            <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0.96"/>
                         </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
                 </BeginStoryboard>
@@ -73,27 +73,27 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="{Binding Name, Mode=TwoWay}" FontWeight="Bold" />
                                 <TextBlock Grid.Row="1" Text="{Binding Path, Mode=TwoWay}" />
-                                <ListBox Grid.Row="2" ItemsSource="{Binding IncomingChanges, Mode=TwoWay}">
+                                <ListBox Grid.Row="2" ItemsSource="{Binding IncomingChangesets, Mode=TwoWay}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="84" />
+                                                    <RowDefinition Height="64" />
                                                     <RowDefinition Height="20" />
                                                     <RowDefinition Height="20" />
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
                                                 <Grid Grid.Row="0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="84" />
+                                                        <ColumnDefinition Width="48" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <Image Grid.Column="0" Source="{Binding Gravatar, Mode=TwoWay}" />
+                                                    <Image Grid.Column="0" Source="{Binding Gravatar, Mode=TwoWay}" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" />
                                                     <Grid Grid.Column="1">
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="20" />
-                                                            <RowDefinition Height="20" />
-                                                            <RowDefinition Height="20" />
+                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="18" />
+                                                            <RowDefinition Height="18" />
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Grid.Row="0" Text="{Binding AuthorName, Mode=TwoWay}" />
                                                         <TextBlock Grid.Row="1" Text="{Binding AuthorEmail, Mode=TwoWay}" />

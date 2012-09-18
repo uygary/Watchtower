@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Windows.Media.Imaging;
 using Community.CsharpSqlite.SQLiteClient;
 using Entropik.Web.Gravatar;
 using GalaSoft.MvvmLight.Ioc;
@@ -15,12 +16,12 @@ namespace Watchtower.Services
     public class DataService : IDataService
     {
         private PluginService _pluginService;
-        private Dictionary<string, Icon> _gravatars;
+        private Dictionary<string, BitmapImage> _gravatars;
 
         public DataService()
         {
             _pluginService = SimpleIoc.Default.GetInstance<PluginService>();
-            _gravatars = new Dictionary<string, Icon>();
+            _gravatars = new Dictionary<string, BitmapImage>();
 
             InitializeDatabase();
         }
@@ -46,10 +47,9 @@ namespace Watchtower.Services
                 }
                 else
                 {
-                    Stream gravatarStream = GravatarHelper.GetGravatar(author);
-                    if (null != gravatarStream)
+                    BitmapImage gravatar = GravatarHelper.GetBitmapImage(author, rating : GravatarRating.X);
+                    if (null != gravatar)
                     {
-                        Icon gravatar = new Icon(gravatarStream);
                         _gravatars.Add(author, gravatar);
                         changeset.Gravatar = gravatar;
                     }
@@ -190,7 +190,7 @@ namespace Watchtower.Services
             IDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                int period = reader.GetInt16(reader.GetOrdinal("UpdatePeriod"));
+                int period = reader.GetInt16(reader.GetOrdinal("Value"));
                 result.UpdatePeriod = period;
             }
 

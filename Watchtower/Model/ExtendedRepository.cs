@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace Watchtower.Model
 {
@@ -9,13 +10,13 @@ namespace Watchtower.Model
         public string Type { get; set; }
         public string Path { get; set; }
         public string Name { get; set; }
-        public IList<ExtendedChangeset> IncomingChangesets { get; set; }
-        public IList<ExtendedChangeset> OutgoingChangesets { get; set; }
+        public ICollection<ExtendedChangeset> IncomingChangesets { get; set; }
+        public ICollection<ExtendedChangeset> OutgoingChangesets { get; set; }
 
         public ExtendedRepository()
         {
-            IncomingChangesets = new List<ExtendedChangeset>();
-            OutgoingChangesets = new List<ExtendedChangeset>();
+            IncomingChangesets = new ObservableCollection<ExtendedChangeset>();
+            OutgoingChangesets = new ObservableCollection<ExtendedChangeset>();
         }
         public ExtendedRepository(string type, string path)
             : this()

@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 
 using Watchtower.ViewModel;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace Watchtower
 {
@@ -99,6 +100,12 @@ namespace Watchtower
         }
 
         #endregion
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SimpleIoc.Default.GetInstance<Watchtower.View.NotificationWindow>().Close();
+            base.OnClosing(e);
+        }
 
     }
 }

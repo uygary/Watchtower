@@ -17,8 +17,7 @@ namespace Watchtower
             RegisterServices();
             InstantiateServices();
             RegisterViewModels();
-
-            InitializeNotificationWindow();
+            RegisterViews();
         }
 
         private void RegisterServices()
@@ -42,6 +41,9 @@ namespace Watchtower
         private void InstantiateServices()
         {
             //Instantiate WorkerService
+            SimpleIoc.Default.GetInstance<IDataService>();
+
+            //Instantiate WorkerService
             SimpleIoc.Default.GetInstance<WorkerService>();
 
             //Instantiate PluginService
@@ -53,7 +55,7 @@ namespace Watchtower
             SimpleIoc.Default.Register<NotificationViewModel>();
         }
 
-        private void InitializeNotificationWindow()
+        private void RegisterViews()
         {
             SimpleIoc.Default.Register<NotificationWindow>();
         }

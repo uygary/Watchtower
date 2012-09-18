@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -78,7 +79,7 @@ namespace Watchtower.Services
 
             //Fire event.
             if (null != IncomingChangesDetected)
-                IncomingChangesDetected(this, new IncomingChangesDetectedEventArgs(new List<ExtendedRepository>(UpdatedRepositories.Values)));
+                IncomingChangesDetected(this, new IncomingChangesDetectedEventArgs(new ObservableCollection<ExtendedRepository>(UpdatedRepositories.Values)));
         }
 
         #endregion
@@ -90,12 +91,12 @@ namespace Watchtower.Services
     public delegate void IncomingChangesDetectedEventHandler(object sender, IncomingChangesDetectedEventArgs e);
     public class IncomingChangesDetectedEventArgs: EventArgs
     {
-        public IncomingChangesDetectedEventArgs(IList<ExtendedRepository> repositories)
+        public IncomingChangesDetectedEventArgs(ObservableCollection<ExtendedRepository> repositories)
         {
             Repositories = repositories;
         }
 
-        public IList<ExtendedRepository> Repositories { get; set; }
+        public ObservableCollection<ExtendedRepository> Repositories { get; set; }
     }
     #endregion
 
