@@ -7,8 +7,8 @@ namespace Watchtower.Services
 {
     public interface IDataService
     {
-        void GetRepositories(Action<IList<ExtendedRepository>, Exception> callback);
-        void GetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback);
+        void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback);
+        void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback);
 
         #region DB related methods
         IList<ExtendedRepository> ReadRepositories();

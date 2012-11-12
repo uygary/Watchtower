@@ -26,12 +26,12 @@ namespace Watchtower.Services
             InitializeDatabase();
         }
 
-        public void GetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
+        public void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
         {
             IList<ExtendedRepository> repos = ReadRepositories();
             callback(repos, null);
         }
-        public void GetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
+        public void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
         {
             //Get incoming changesets
             IPlugin rcsPlugin = _pluginService.Plugins[repository.Type];
@@ -122,7 +122,25 @@ namespace Watchtower.Services
             //insert new records
             foreach (ExtendedRepository repo in repositories)
             {
-                cmd.CommandText = string.Format("INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( '{0}', '{1}', '{2}' )", repo.Path, repo.Name, repo.Type);
+                //cmd.CommandText = string.Format("INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( '{0}', '{1}', '{2}' )", repo.Path, repo.Name, repo.Type);
+                cmd.CommandText = "INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( @Path, @Name, @RepoType )";
+
+                //cmd.Parameters.Add("@Path", SqlDbType.VarChar).Value = repo.Path;
+
+                IDbDataParameter prm;
+
+                prm = cmd.CreateParameter();
+                prm.ParameterName = "@Path";
+                prm.Value = repo.Path;
+
+                prm = cmd.CreateParameter();
+                prm.ParameterName = "@Name";
+                prm.Value = repo.Name;
+
+                prm = cmd.CreateParameter();
+                prm.ParameterName = "@RepoType";
+                prm.Value = repo.Type;
+
                 cmd.ExecuteNonQuery();
             }
 
@@ -159,7 +177,19 @@ namespace Watchtower.Services
             cmd.ExecuteNonQuery();
 
             //Set initial configuration values
-            cmd.CommandText = string.Format("INSERT INTO Configuration ( Key, Value ) VALUES ( '{0}', {1} )", Constants.PeriodKey, Constants.PeriodValue);
+            //cmd.CommandText = string.Format("INSERT INTO Configuration ( Key, Value ) VALUES ( '{0}', {1} )", Constants.PeriodKey, Constants.PeriodValue);
+            cmd.CommandText = "INSERT INTO Configuration ( Key, Value ) VALUES ( @Key, @Value )";
+
+            IDbDataParameter prm;
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Key";
+            prm.Value = Constants.PeriodKey;
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Value";
+            prm.Value = Constants.PeriodValue;
+
             cmd.ExecuteNonQuery();
 
             //Close and cleanup
@@ -218,7 +248,19 @@ namespace Watchtower.Services
             IDbCommand cmd = connection.CreateCommand();
 
             //clear REPOSITORIES table
-            cmd.CommandText = string.Format("UPDATE Configuration SET Value='{0}' WHERE Key='{1}'", Constants.PeriodKey, configData.UpdatePeriod);
+            //cmd.CommandText = string.Format("UPDATE Configuration SET Value='{0}' WHERE Key='{1}'", configData.UpdatePeriod, Constants.PeriodKey);
+            cmd.CommandText = "UPDATE Configuration SET Value='{0}' WHERE Key='{1}'";
+
+            IDbDataParameter prm;
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Value";
+            prm.Value = configData.UpdatePeriod;
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Key";
+            prm.Value = Constants.PeriodKey;
+
             cmd.ExecuteNonQuery();
 
             //Close and cleanup

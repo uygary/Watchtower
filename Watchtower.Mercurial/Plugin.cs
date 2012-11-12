@@ -32,7 +32,7 @@ namespace Watchtower
             return result;
         }
 
-        public Model.Repository GetIncomingChanges(Watchtower.Model.Repository repository)
+        public Watchtower.Model.Repository GetIncomingChanges(Watchtower.Model.Repository repository)
         {
             List<Watchtower.Model.Changeset> changesets = new List<Watchtower.Model.Changeset>();
             Repository mercurialRepo = new Repository(repository.Path);
@@ -48,7 +48,7 @@ namespace Watchtower
             mercurialRepo.Dispose();
             return repository;
         }
-        public Model.Repository GetOutgoingChanges(Watchtower.Model.Repository repository)
+        public Watchtower.Model.Repository GetOutgoingChanges(Watchtower.Model.Repository repository)
         {
             List<Watchtower.Model.Changeset> changesets = new List<Watchtower.Model.Changeset>();
             Repository mercurialRepo = new Repository(repository.Path);

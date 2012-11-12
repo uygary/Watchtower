@@ -44,7 +44,7 @@ namespace Watchtower.Services
         private void OnTimerTick(object sender, EventArgs e)
         {
             UpdatedRepositories.Clear();
-            _dataService.GetRepositories(OnGetRepositoriesCompleted);
+            _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
         }
 
         #region Callbacks
@@ -54,7 +54,7 @@ namespace Watchtower.Services
         {
             foreach (ExtendedRepository repo in repositories)
             {
-                _dataService.GetIncomingChanges(repo, OnGetIncomingChangesCompleted);
+                _dataService.BeginGetIncomingChanges(repo, OnGetIncomingChangesCompleted);
             }
         }
         private void OnGetIncomingChangesCompleted(ExtendedRepository repository, Exception exception)

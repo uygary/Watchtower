@@ -110,7 +110,7 @@ namespace Watchtower.ViewModel
 
         private void Initialize()
         {
-            _dataService.GetRepositories(OnGetRepositoriesCompleted);
+            _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
         }
 
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)

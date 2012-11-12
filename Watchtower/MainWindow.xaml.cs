@@ -11,7 +11,7 @@ namespace Watchtower
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public sealed partial class MainWindow : Window, IDisposable //IDisposable and thus sealed is unneccessary.
     {
         internal System.Windows.Forms.NotifyIcon _trayIcon;
         private WindowState _storedWindowState = WindowState.Normal;
@@ -107,5 +107,12 @@ namespace Watchtower
             base.OnClosing(e);
         }
 
+
+        public void Dispose()
+        {
+            _trayIcon.Dispose();
+            //Dispose(true);
+            //GC.SuppressFinalize(this);
+        }
     }
 }

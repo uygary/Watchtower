@@ -11,12 +11,12 @@ namespace Watchtower.Design
     /// </summary>
     public class DesignDataService : IDataService
     {
-        public void GetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
+        public void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
         {
             List<ExtendedRepository> repositories = new List<ExtendedRepository>();
             callback(repositories, null);
         }
-        public void GetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
+        public void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
         {
             callback(repository, null);
         }
