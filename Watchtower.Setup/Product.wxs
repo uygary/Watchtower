@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Watchtower.Setup" Language="1033" Version="1.0.0.0" Manufacturer="Entropik.NET" UpgradeCode="f9a7f46d-8207-4eee-887a-350fd8e2543c">
+	<Product Id="*" Name="Watchtower" Language="1033" Version="1.0.0.0" Manufacturer="Entropik.NET" UpgradeCode="f9a7f46d-8207-4eee-887a-350fd8e2543c">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
