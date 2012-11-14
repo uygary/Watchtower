@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 using Watchtower.Core;
@@ -30,17 +32,30 @@ namespace Watchtower.Services
             string fullPath = Path.GetFullPath(pluginsFolder);
             string[] pluginFileNames = Directory.GetFiles(fullPath, "*.dll");
 
+            var iType = typeof(IPlugin);
             foreach (string fileName in pluginFileNames)
             {
                 Assembly assembly = Assembly.LoadFile(fileName);
-                Type type = assembly.GetType("Watchtower.Plugin");
-                if (null != type)
+
+                var plugins = assembly.GetTypes().Where(p => iType.IsAssignableFrom(p) && p.IsClass);
+                if (null != plugins && plugins.Count() > 0)
                 {
-                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+                    var pType = plugins.First();
+                    IPlugin plugin = (IPlugin)Activator.CreateInstance(pType);
 
                     if (!Plugins.ContainsKey(plugin.RepositoryType))
                         Plugins.Add(plugin.RepositoryType, plugin);
+
                 }
+
+                //Type type = assembly.GetType("Watchtower.Plugin");
+                //if (null != type)
+                //{
+                //    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
+
+                //    if (!Plugins.ContainsKey(plugin.RepositoryType))
+                //        Plugins.Add(plugin.RepositoryType, plugin);
+                //}
             }
         }
 
