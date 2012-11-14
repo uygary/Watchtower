@@ -23,6 +23,7 @@ namespace Watchtower.Services
             _dataService = dataService;
             _repositoriesToCheck = new List<ExtendedRepository>();
             _updatedRepositories = new Dictionary<string, ExtendedRepository>();
+
             Initialize();
         }
         private void Initialize()
@@ -86,7 +87,7 @@ namespace Watchtower.Services
                 ExtendedRepository firstRepo = _repositoriesToCheck[0];
                 _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
             }
-            else
+            else if (_updatedRepositories.Count > 0)
             {
                 OnIncomingChangesDetected();
             }

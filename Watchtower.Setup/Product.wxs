@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Watchtower" Language="1033" Version="1.0.0.0" Manufacturer="Entropik.NET" UpgradeCode="f9a7f46d-8207-4eee-887a-350fd8e2543c">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+	<Product Id="e06e15b0-2e92-11e2-81c1-0800200c9a66" Name="Watchtower" Language="1033" Version="1.0.0.0" Manufacturer="Entropik.NET" UpgradeCode="018f87b0-2e93-11e2-81c1-0800200c9a66">
+		<Package Id="*" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
-		<Feature Id="ProductFeature" Title="Watchtower.Setup" Level="1">
+		<Feature Id="ProductFeature" Title="Watchtower" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="PluginComponents" />
 		</Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Watchtower" />
+				<Directory Id="INSTALLFOLDER" Name="Watchtower" >
+				  <Directory Id="PLUGINFOLDER" Name="Plugins" />
+        </Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
@@ -25,6 +28,23 @@
 			<!-- <Component Id="ProductComponent"> -->
 				<!-- TODO: Insert files, registry keys, and other resources here. -->
 			<!-- </Component> -->
+			 <Component Id="Watchtower" Guid="f1370370-2e97-11e2-81c1-0800200c9a66">
+				<File Id="Watchtower.exe" Source="../Watchtower/bin/Release/Watchtower.exe" />
+				<File Id="Watchtower.Core.dll" Source="../Watchtower/bin/Release/Watchtower.Core.dll" />
+				<File Id="GalaSoft.MvvmLight.Extras.WPF4.dll" Source="../Watchtower/bin/Release/GalaSoft.MvvmLight.Extras.WPF4.dll" />
+				<File Id="GalaSoft.MvvmLight.WPF4.dll" Source="../Watchtower/bin/Release/GalaSoft.MvvmLight.WPF4.dll" />
+				<File Id="Microsoft.Practices.ServiceLocation.dll" Source="../Watchtower/bin/Release/Microsoft.Practices.ServiceLocation.dll" />
+				<File Id="Entropik.Web.Gravatar.dll" Source="../Watchtower/bin/Release/Entropik.Web.Gravatar.dll" />
+				<File Id="Community.CsharpSqlite.SQLiteClient.dll" Source="../Watchtower/bin/Release/Community.CsharpSqlite.SQLiteClient.dll" />
+				<File Id="Community.CsharpSqlite.dll" Source="../Watchtower/bin/Release/Community.CsharpSqlite.dll" />
+				<File Id="System.Windows.Interactivity.dll" Source="../Watchtower/bin/Release/System.Windows.Interactivity.dll" />
+			 </Component> 
+		</ComponentGroup>
+		<ComponentGroup Id="PluginComponents" Directory="PLUGINFOLDER">
+			 <Component Id="Watchtower.Mercurial" Guid="4510ece0-2e98-11e2-81c1-0800200c9a66"> 
+				<File Id="Watchtower.Mercurial.dll" Source="../Watchtower.Mercurial/bin/Release/Watchtower.Mercurial.dll" />
+				<File Id="Mercurial.Net.dll" Source="../Watchtower.Mercurial/bin/Release/Mercurial.Net.dll" />
+			 </Component> 
 		</ComponentGroup>
 	</Fragment>
 </Wix>

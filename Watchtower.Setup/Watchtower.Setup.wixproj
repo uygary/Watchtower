@@ -23,32 +23,6 @@
   <ItemGroup>
     <Compile Include="Product.wxs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Watchtower.Core\Watchtower.Core.csproj">
-      <Name>Watchtower.Core</Name>
-      <Project>{d1996596-b096-420e-9065-129ad802b7f3}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Watchtower.Mercurial\Watchtower.Mercurial.csproj">
-      <Name>Watchtower.Mercurial</Name>
-      <Project>{f902e477-4a34-4caf-b5e0-da17f77b7137}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Watchtower\Watchtower.csproj">
-      <Name>Watchtower</Name>
-      <Project>{a73a2e31-9cfe-4c50-a576-2a8b05da61b3}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -113,35 +113,41 @@ namespace Watchtower.Services
             connection.Open();
 
             //create command
-            IDbCommand cmd = connection.CreateCommand();
+            IDbCommand deleteCmd = connection.CreateCommand();
 
             //clear REPOSITORIES table
-            cmd.CommandText = "DELETE FROM Repositories";
-            cmd.ExecuteNonQuery();
+            deleteCmd.CommandText = "DELETE FROM Repositories";
+            deleteCmd.ExecuteNonQuery();
 
             //insert new records
             foreach (ExtendedRepository repo in repositories)
             {
+                //create command
+                IDbCommand insertCmd = connection.CreateCommand();
+
                 //cmd.CommandText = string.Format("INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( '{0}', '{1}', '{2}' )", repo.Path, repo.Name, repo.Type);
-                cmd.CommandText = "INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( @Path, @Name, @RepoType )";
+                insertCmd.CommandText = "INSERT INTO Repositories ( Path, Name, RepoType ) VALUES ( @Path, @Name, @RepoType )";
 
                 //cmd.Parameters.Add("@Path", SqlDbType.VarChar).Value = repo.Path;
 
                 IDbDataParameter prm;
 
-                prm = cmd.CreateParameter();
+                prm = insertCmd.CreateParameter();
                 prm.ParameterName = "@Path";
                 prm.Value = repo.Path;
+                insertCmd.Parameters.Add(prm);
 
-                prm = cmd.CreateParameter();
+                prm = insertCmd.CreateParameter();
                 prm.ParameterName = "@Name";
                 prm.Value = repo.Name;
+                insertCmd.Parameters.Add(prm);
 
-                prm = cmd.CreateParameter();
+                prm = insertCmd.CreateParameter();
                 prm.ParameterName = "@RepoType";
                 prm.Value = repo.Type;
+                insertCmd.Parameters.Add(prm);
 
-                cmd.ExecuteNonQuery();
+                insertCmd.ExecuteNonQuery();
             }
 
             //Close and cleanup
