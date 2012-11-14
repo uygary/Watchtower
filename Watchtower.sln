@@ -13,6 +13,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Watchtower.Installer", "Wat
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Watchtower.Setup", "Watchtower.Setup\Watchtower.Setup.wixproj", "{A0508A7A-C2A0-45B8-B420-8DBA770334C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchtower.Git", "Watchtower.Git\Watchtower.Git.csproj", "{489F8979-0941-41B0-9E98-B17E203DA111}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,16 @@ Global
 		{A0508A7A-C2A0-45B8-B420-8DBA770334C4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{A0508A7A-C2A0-45B8-B420-8DBA770334C4}.Release|x86.ActiveCfg = Release|x86
 		{A0508A7A-C2A0-45B8-B420-8DBA770334C4}.Release|x86.Build.0 = Release|x86
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{489F8979-0941-41B0-9E98-B17E203DA111}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
