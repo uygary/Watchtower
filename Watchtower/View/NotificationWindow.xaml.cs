@@ -10,12 +10,19 @@ namespace Watchtower.View
     /// <summary>
     /// Interaction logic for NotificationWindow.xaml
     /// </summary>
-    public partial class NotificationWindow : Window
+    public partial class NotificationWindow : Window, IDisposable
     {
+        Storyboard _fadeInAnimation;
+        Storyboard _fadeOutAnimation;
+
         public NotificationWindow()
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
+
+            _fadeInAnimation = (Storyboard)FindResource("FadeInStoryboard");
+            _fadeOutAnimation = (Storyboard)FindResource("FadeOutStoryboard");
+            _fadeOutAnimation.Completed += OnFadeOutAnimationCompleted;
         }
 
         private void Show()
@@ -41,18 +48,30 @@ namespace Watchtower.View
         {
             if (!this.IsVisible)
                 Show();
-            Storyboard fadeAnimation = (Storyboard)FindResource("FadeInStoryboard");
-            fadeAnimation.Begin(this);
+            _fadeInAnimation.Begin(this);
         }
         internal void FadeOut()
         {
-            Storyboard fadeAnimation = (Storyboard)FindResource("FadeOutStoryboard");
-            fadeAnimation.Begin(this);
+            _fadeOutAnimation.Begin(this);
         }
 
         private void ClosePopup(object sender, RoutedEventArgs e)
         {
             FadeOut();
         }
+
+        private void OnFadeOutAnimationCompleted(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+
+        #region IDisposable members
+        public void Dispose()
+        {
+            _fadeOutAnimation.Completed -= OnFadeOutAnimationCompleted;
+        }
+        #endregion
+
     }
 }
