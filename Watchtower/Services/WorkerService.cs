@@ -14,21 +14,15 @@ namespace Watchtower.Services
         public event IncomingChangesDetectedEventHandler IncomingChangesDetected;
         private readonly IDataService _dataService;
         private DispatcherTimer _timer;
+        private bool _checkingRepositories;
+        private List<ExtendedRepository> _repositoriesToCheck;
         private Dictionary<string, ExtendedRepository> _updatedRepositories;
-        public Dictionary<string, ExtendedRepository> UpdatedRepositories
-        {
-            get { return _updatedRepositories; }
-            set
-            {
-                _updatedRepositories = value;
-                //RaisePropertyChanged(UpdatedRepositories);
-            }
-        }
 
         public WorkerService(IDataService dataService)
         {
             _dataService = dataService;
-            UpdatedRepositories = new Dictionary<string, ExtendedRepository>();
+            _repositoriesToCheck = new List<ExtendedRepository>();
+            _updatedRepositories = new Dictionary<string, ExtendedRepository>();
             Initialize();
         }
         private void Initialize()
@@ -43,25 +37,41 @@ namespace Watchtower.Services
 
         private void OnTimerTick(object sender, EventArgs e)
         {
-            UpdatedRepositories.Clear();
+            _updatedRepositories.Clear();
             _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
         }
 
         #region Callbacks
 
-        //TODO: check repositories sequentially.
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
         {
             foreach (ExtendedRepository repo in repositories)
             {
-                _dataService.BeginGetIncomingChanges(repo, OnGetIncomingChangesCompleted);
+                _repositoriesToCheck.Add(repo);
+            }
+
+            if (_repositoriesToCheck.Count > 0)
+            {
+                ExtendedRepository firstRepo = _repositoriesToCheck[0];
+                _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
             }
         }
         private void OnGetIncomingChangesCompleted(ExtendedRepository repository, Exception exception)
         {
+            _repositoriesToCheck.RemoveAt(0);
+
             if (null != repository && null != repository.IncomingChangesets && repository.IncomingChangesets.Count > 0)
             {
-                UpdatedRepositories.Add(repository.Name, repository);
+                _updatedRepositories.Add(repository.Name, repository);
+            }
+
+            if (_repositoriesToCheck.Count > 0)
+            {
+                ExtendedRepository firstRepo = _repositoriesToCheck[0];
+                _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
+            }
+            else if (_updatedRepositories.Count > 0)
+            {
                 OnIncomingChangesDetected();
             }
         }
@@ -79,7 +89,7 @@ namespace Watchtower.Services
 
             //Fire event.
             if (null != IncomingChangesDetected)
-                IncomingChangesDetected(this, new IncomingChangesDetectedEventArgs(new ObservableCollection<ExtendedRepository>(UpdatedRepositories.Values)));
+                IncomingChangesDetected(this, new IncomingChangesDetectedEventArgs(new ObservableCollection<ExtendedRepository>(_updatedRepositories.Values)));
         }
 
         #endregion
