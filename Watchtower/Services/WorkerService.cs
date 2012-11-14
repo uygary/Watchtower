@@ -14,7 +14,7 @@ namespace Watchtower.Services
         public event IncomingChangesDetectedEventHandler IncomingChangesDetected;
         private readonly IDataService _dataService;
         private DispatcherTimer _timer;
-        private bool _checkingRepositories;
+        private bool _workSequential;
         private List<ExtendedRepository> _repositoriesToCheck;
         private Dictionary<string, ExtendedRepository> _updatedRepositories;
 
@@ -27,6 +27,9 @@ namespace Watchtower.Services
         }
         private void Initialize()
         {
+            //TODO: Make sequential progress an option. Read it from configuration.
+            _workSequential = true;
+
             int period = _dataService.ReadConfiguration().UpdatePeriod;
             _timer = new DispatcherTimer();
             _timer.Interval = new TimeSpan(0, period, 0);
@@ -50,10 +53,23 @@ namespace Watchtower.Services
                 _repositoriesToCheck.Add(repo);
             }
 
-            if (_repositoriesToCheck.Count > 0)
+            if (_workSequential)
             {
-                ExtendedRepository firstRepo = _repositoriesToCheck[0];
-                _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
+                if (_repositoriesToCheck.Count > 0)
+                {
+                    ExtendedRepository firstRepo = _repositoriesToCheck[0];
+                    _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
+                }
+            }
+            else
+            {
+                if (_repositoriesToCheck.Count > 0)
+                {
+                    foreach (ExtendedRepository repo in _repositoriesToCheck)
+                    {
+                        _dataService.BeginGetIncomingChanges(repo, OnGetIncomingChangesCompleted);
+                    }
+                }
             }
         }
         private void OnGetIncomingChangesCompleted(ExtendedRepository repository, Exception exception)
@@ -70,7 +86,7 @@ namespace Watchtower.Services
                 ExtendedRepository firstRepo = _repositoriesToCheck[0];
                 _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
             }
-            else if (_updatedRepositories.Count > 0)
+            else
             {
                 OnIncomingChangesDetected();
             }
