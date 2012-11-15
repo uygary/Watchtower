@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Windows.Media.Imaging;
 using Community.CsharpSqlite.SQLiteClient;
 using Entropik.Web.Gravatar;
@@ -28,7 +29,9 @@ namespace Watchtower.Services
         public void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
         {
             IList<ExtendedRepository> repos = ReadRepositories();
-            callback(repos, null);
+            IList<ExtendedRepository> reposOrderedByName = new List<ExtendedRepository>(from ExtendedRepository r in repos orderby r.Name select r);
+
+            callback(reposOrderedByName, null);
         }
         public void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
         {

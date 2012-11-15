@@ -11,7 +11,7 @@ using Watchtower.Core;
 
 namespace Watchtower.Git
 {
-    public class GitPlugin : IPlugin
+    public class Plugin : IPlugin
     {
         public string RepositoryType { get { return Constants.RepositoryType; } }
 
@@ -43,7 +43,7 @@ namespace Watchtower.Git
             }
             catch
             {
-                result = true;
+                result = false;
             }
             return result;
         }
