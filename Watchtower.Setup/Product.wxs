@@ -44,7 +44,15 @@
 			 <Component Id="Watchtower.Mercurial" Guid="4510ece0-2e98-11e2-81c1-0800200c9a66"> 
 				<File Id="Watchtower.Mercurial.dll" Source="../Watchtower.Mercurial/bin/Release/Watchtower.Mercurial.dll" />
 				<File Id="Mercurial.Net.dll" Source="../Watchtower.Mercurial/bin/Release/Mercurial.Net.dll" />
-			 </Component> 
+			 </Component>
+      <Component Id="Watchtower.Git" Guid="b93fe2e0-2ee0-11e2-81c1-0800200c9a66">
+        <File Id="Watchtower.Git.dll" Source="../Watchtower.Git/bin/Release/Watchtower.Git.dll" />
+        <File Id="ICSharpCode.SharpZipLib.dll" Source="../Watchtower.Git/bin/Release/ICSharpCode.SharpZipLib.dll" />
+        <File Id="NGit.dll" Source="../Watchtower.Git/bin/Release/NGit.dll" />
+        <File Id="NSch.dll" Source="../Watchtower.Git/bin/Release/NSch.dll" />
+        <File Id="Sharpen.dll" Source="../Watchtower.Git/bin/Release/Sharpen.dll" />
+        <File Id="Sharpen.Unix.dll" Source="../Watchtower.Git/bin/Release/Sharpen.Unix.dll" />
+      </Component>
 		</ComponentGroup>
 	</Fragment>
 </Wix>
