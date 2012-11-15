@@ -28,10 +28,22 @@ namespace Watchtower.Services
 
         public void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
         {
-            IList<ExtendedRepository> repos = ReadRepositories();
-            IList<ExtendedRepository> reposOrderedByName = new List<ExtendedRepository>(from ExtendedRepository r in repos orderby r.Name select r);
+            IList<ExtendedRepository> reposOrderedByName = null;
+            Exception ex = null;
 
-            callback(reposOrderedByName, null);
+            try
+            {
+                IList<ExtendedRepository> repos = ReadRepositories();
+                reposOrderedByName = new List<ExtendedRepository>(from ExtendedRepository r in repos orderby r.Name select r);
+            }
+            catch(Exception e)
+            {
+                ex = e;
+            }
+            finally
+            {
+                callback(reposOrderedByName, ex);
+            }
         }
         public void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
         {
@@ -62,7 +74,7 @@ namespace Watchtower.Services
         }
 
         #region DB related methods
-        public IList<ExtendedRepository> ReadRepositories()
+        private IList<ExtendedRepository> ReadRepositories()
         {
             List<ExtendedRepository> result = new List<ExtendedRepository>();
 
@@ -98,7 +110,7 @@ namespace Watchtower.Services
 
             return result;
         }
-        public void UpdateRepositories(IEnumerable<ExtendedRepository> repositories)
+        public void SaveRepositories(IEnumerable<ExtendedRepository> repositories)
         {
             //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();
@@ -224,7 +236,7 @@ namespace Watchtower.Services
             connection.Close();
             connection = null;
         }
-        public ConfigData ReadConfiguration()
+        public ConfigData GetConfiguration()
         {
             ConfigData result = new ConfigData(Constants.Configuration.PeriodValue, true);
 
@@ -275,7 +287,7 @@ namespace Watchtower.Services
 
             return result;
         }
-        public void UpdateConfiguration(ConfigData configData)
+        public void SaveConfiguration(ConfigData configData)
         {
             //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();

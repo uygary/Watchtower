@@ -11,11 +11,10 @@ namespace Watchtower.Services
         void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback);
 
         #region DB related methods
-        IList<ExtendedRepository> ReadRepositories();
-        void UpdateRepositories(IEnumerable<ExtendedRepository> repositories);
+        void SaveRepositories(IEnumerable<ExtendedRepository> repositories);
         void InitializeDatabase();
-        ConfigData ReadConfiguration();
-        void UpdateConfiguration(ConfigData configData);
+        ConfigData GetConfiguration();
+        void SaveConfiguration(ConfigData configData);
         #endregion
     }
 }

@@ -12,7 +12,8 @@
     AllowDrop="True"
     Title="Watchtower Source Control Monitor"
     Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
-    DataContext="{Binding Main, Source={StaticResource Locator}}">
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Name="mainwindow">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -61,7 +62,9 @@
                                 <TextBlock Grid.Row="1" Text="{Binding Path, Mode=TwoWay}" />
                                 <TextBlock Grid.Row="2" Text="{Binding Type, Mode=TwoWay}" />
                             </Grid>
-                            <Image Grid.Column="2" Source="Images/Delete.png" Width="24" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                            <Button Grid.Column="2" Command="{Binding Path=Main.DeleteCommand, Source={StaticResource Locator}}" CommandParameter="{Binding .}" Width="24" Height="24" HorizontalAlignment="Left">
+                                <Image Source="Images/Delete.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

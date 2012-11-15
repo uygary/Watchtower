@@ -25,6 +25,7 @@ namespace Watchtower.ViewModel
         public RelayCommand<DragEventArgs> DragEnterCommand { get; private set; }
         public RelayCommand<DragEventArgs> DragLeaveCommand { get; private set; }
         public RelayCommand<DragEventArgs> DropCommand { get; private set; }
+        public RelayCommand<object> DeleteCommand { get; private set; }
         public RelayCommand LoadCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
 
@@ -87,15 +88,16 @@ namespace Watchtower.ViewModel
             DragEnterCommand = new RelayCommand<DragEventArgs>(OnDragEnter);
             DragLeaveCommand = new RelayCommand<DragEventArgs>(OnDragLeave);
             DropCommand = new RelayCommand<DragEventArgs>(OnDrop);
-            LoadCommand = new RelayCommand(OnLoad);
-            SaveCommand = new RelayCommand(OnSave);
+            DeleteCommand = new RelayCommand<object>(DeleteRepository);
+            LoadCommand = new RelayCommand(LoadRepositories);
+            SaveCommand = new RelayCommand(SaveRepositories);
 
             Initialize();
         }
 
         private void Initialize()
         {
-            _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
+            LoadRepositories();
         }
 
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
@@ -104,14 +106,21 @@ namespace Watchtower.ViewModel
         }
 
 
-        private void OnLoad()
+        private void DeleteRepository(object o)
         {
-            Repositories = new ObservableCollection<ExtendedRepository>(_dataService.ReadRepositories());
+            ExtendedRepository repo = (ExtendedRepository)o;
+            Repositories.Remove(repo);
         }
-        private void OnSave()
+
+        private void LoadRepositories()
         {
-            _dataService.UpdateRepositories(Repositories);
+            _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
         }
+        private void SaveRepositories()
+        {
+            _dataService.SaveRepositories(Repositories);
+        }
+
 
         #region Drag and drop related methods
 

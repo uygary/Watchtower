@@ -31,7 +31,7 @@ namespace Watchtower.Services
             //TODO: Make sequential progress an option. Read it from configuration.
             _workSequential = true;
 
-            int period = _dataService.ReadConfiguration().UpdatePeriod;
+            int period = _dataService.GetConfiguration().UpdatePeriod;
             _timer = new DispatcherTimer();
             _timer.Interval = new TimeSpan(0, period, 0);
             _timer.Tick += new EventHandler(OnTimerTick);
