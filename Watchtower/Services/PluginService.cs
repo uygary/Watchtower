@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 
 using Watchtower.Core;
-using Watchtower.Model;
+using Watchtower.Models;
 
 namespace Watchtower.Services
 {

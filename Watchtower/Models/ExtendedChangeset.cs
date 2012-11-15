@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 
-namespace Watchtower.Model
+namespace Watchtower.Models
 {
     [DebuggerDisplay("ExtendedChangeset ({Timestamp}:{Revision} - <{AuthorEmail}>{AuthorName} - {CommitMessage})")]
     public class ExtendedChangeset

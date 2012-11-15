@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Watchtower.Model;
+using Watchtower.Models;
 
 namespace Watchtower.Services
 {

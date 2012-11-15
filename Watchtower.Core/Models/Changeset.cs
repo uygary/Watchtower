@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Watchtower.Model
+namespace Watchtower.Models
 {
     [DebuggerDisplay("Changeset ({Timestamp}:{Revision} - <{AuthorEmail}>{AuthorName} - {CommitMessage})")]
     public class Changeset

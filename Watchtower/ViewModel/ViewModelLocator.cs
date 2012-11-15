@@ -14,10 +14,10 @@ using Microsoft.Practices.ServiceLocation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 
-using Watchtower.Model;
+using Watchtower.Models;
 using Watchtower.Services;
 
-namespace Watchtower.ViewModel
+namespace Watchtower.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the

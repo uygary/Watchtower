@@ -33,15 +33,15 @@ namespace Watchtower
             return result;
         }
 
-        public Watchtower.Model.Repository GetIncomingChanges(Watchtower.Model.Repository repository)
+        public Watchtower.Models.Repository GetIncomingChanges(Watchtower.Models.Repository repository)
         {
-            List<Watchtower.Model.Changeset> changesets = new List<Watchtower.Model.Changeset>();
+            List<Watchtower.Models.Changeset> changesets = new List<Watchtower.Models.Changeset>();
             Repository mercurialRepo = new Repository(repository.Path);
             IEnumerable<Changeset> incoming = mercurialRepo.Incoming();
 
             foreach (Changeset cs in incoming)
             {
-                Watchtower.Model.Changeset changeset = new Watchtower.Model.Changeset(cs.Branch, cs.Revision, cs.AuthorEmailAddress, cs.Timestamp, cs.AuthorName, cs.CommitMessage);
+                Watchtower.Models.Changeset changeset = new Watchtower.Models.Changeset(cs.Branch, cs.Revision, cs.AuthorEmailAddress, cs.Timestamp, cs.AuthorName, cs.CommitMessage);
                 changesets.Add(changeset);
             }
 
@@ -49,15 +49,15 @@ namespace Watchtower
             mercurialRepo.Dispose();
             return repository;
         }
-        public Watchtower.Model.Repository GetOutgoingChanges(Watchtower.Model.Repository repository)
+        public Watchtower.Models.Repository GetOutgoingChanges(Watchtower.Models.Repository repository)
         {
-            List<Watchtower.Model.Changeset> changesets = new List<Watchtower.Model.Changeset>();
+            List<Watchtower.Models.Changeset> changesets = new List<Watchtower.Models.Changeset>();
             Repository mercurialRepo = new Repository(repository.Path);
             IEnumerable<Changeset> outgoing = mercurialRepo.Outgoing();
 
             foreach (Changeset cs in outgoing)
             {
-                Watchtower.Model.Changeset changeset = new Watchtower.Model.Changeset(cs.Branch, cs.Revision, cs.AuthorEmailAddress, cs.Timestamp, cs.AuthorName, cs.CommitMessage);
+                Watchtower.Models.Changeset changeset = new Watchtower.Models.Changeset(cs.Branch, cs.Revision, cs.AuthorEmailAddress, cs.Timestamp, cs.AuthorName, cs.CommitMessage);
                 changesets.Add(changeset);
             }
 
@@ -66,7 +66,7 @@ namespace Watchtower
             return repository;
         }
 
-        public bool PullIncomingChangesets(Watchtower.Model.Repository repository)
+        public bool PullIncomingChangesets(Watchtower.Models.Repository repository)
         {
             bool result = false;
 
@@ -85,7 +85,7 @@ namespace Watchtower
 
             return result;
         }
-        public bool PushOutgoingChangesets(Watchtower.Model.Repository repository)
+        public bool PushOutgoingChangesets(Watchtower.Models.Repository repository)
         {
             bool result = false;
 
@@ -105,7 +105,7 @@ namespace Watchtower
             return result;
         }
 
-        public bool Merge(Watchtower.Model.Repository repository)
+        public bool Merge(Watchtower.Models.Repository repository)
         {
             bool result = false;
 
@@ -126,7 +126,7 @@ namespace Watchtower
 
             return result;
         }
-        public bool StartMerge(Watchtower.Model.Repository repository)
+        public bool StartMerge(Watchtower.Models.Repository repository)
         {
             throw new NotImplementedException();
         }

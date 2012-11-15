@@ -3,8 +3,8 @@ using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
 using Watchtower.Services;
-using Watchtower.View;
-using Watchtower.ViewModel;
+using Watchtower.Views;
+using Watchtower.ViewModels;
 
 namespace Watchtower
 {

@@ -1,6 +1,6 @@
-﻿<Window x:Class="Watchtower.View.NotificationWindow"
+﻿<Window x:Class="Watchtower.Views.NotificationWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:vm="clr-namespace:Watchtower.ViewModel"
+    xmlns:vm="clr-namespace:Watchtower.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -30,6 +30,7 @@
                 <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="0.96"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        
     </Window.Resources>
 
     <Grid RenderTransformOrigin="0,1" DataContext="{Binding Notification, Source={StaticResource Locator}}">
@@ -57,12 +58,27 @@
 
         <!-- Notification area -->
         <Border BorderThickness="1" Background="WhiteSmoke" BorderBrush="Black" CornerRadius="10">
-            <Grid Margin="8">
+            <Grid Margin="6">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <ListBox x:Name="RepositoriesListBox" ItemsSource="{Binding Repositories, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid Grid.Row="0">
+                    <TextBlock Text="Incoming Cganges Found" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" />
+                    <Button HorizontalAlignment="Right" Width="16" Click="ClosePopup">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Grid>
+                                    <!-- circle to have inherited colour -->
+                                    <Ellipse Fill="Black" Height="16" Width="16" />
+                                    <ContentPresenter />
+                                </Grid>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Image Source="/Images/Close.png" />
+                    </Button>
+                </Grid>
+                <ListBox Grid.Row="1" x:Name="RepositoriesListBox" ItemsSource="{Binding Repositories, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -111,7 +127,6 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Grid.Row="1" Content="Close" HorizontalAlignment="Center" Width="48" Click="ClosePopup" />
             </Grid>
         </Border>
     </Grid>

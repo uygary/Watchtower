@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
-namespace Watchtower.Model
+namespace Watchtower.Models
 {
     [DebuggerDisplay("ExtendedRepository: ({Type} - {Path})")]
     public class ExtendedRepository

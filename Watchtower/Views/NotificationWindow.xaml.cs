@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
-using Watchtower.ViewModel;
+using Watchtower.ViewModels;
 
-namespace Watchtower.View
+namespace Watchtower.Views
 {
     /// <summary>
     /// Interaction logic for NotificationWindow.xaml

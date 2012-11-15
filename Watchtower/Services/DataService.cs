@@ -9,7 +9,7 @@ using Entropik.Web.Gravatar;
 using GalaSoft.MvvmLight.Ioc;
 
 using Watchtower.Core;
-using Watchtower.Model;
+using Watchtower.Models;
 
 namespace Watchtower.Services
 {

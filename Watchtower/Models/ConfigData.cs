@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Watchtower.Model
+namespace Watchtower.Models
 {
     [DebuggerDisplay("ConfigData (UpdatePeriod:{UpdatePeriod} - UpdateSequentially:{UpdateSequentially})")]
     public class ConfigData

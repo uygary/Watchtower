@@ -51,6 +51,7 @@
     <ProjectReference Include="..\Watchtower.Core\Watchtower.Core.csproj">
       <Project>{D1996596-B096-420E-9065-129AD802B7F3}</Project>
       <Name>Watchtower.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

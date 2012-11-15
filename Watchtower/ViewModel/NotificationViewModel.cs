@@ -2,10 +2,10 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 
-using Watchtower.Model;
+using Watchtower.Models;
 using Watchtower.Services;
 
-namespace Watchtower.ViewModel
+namespace Watchtower.ViewModels
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

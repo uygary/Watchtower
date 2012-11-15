@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Watchtower.Model
+namespace Watchtower.Models
 {
     [DebuggerDisplay("Repository: ({Type} - {Path})")]
     public class Repository

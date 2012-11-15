@@ -47,7 +47,7 @@ namespace Watchtower.Git
             return result;
         }
 
-        public Model.Repository GetIncomingChanges(Model.Repository repository)
+        public Models.Repository GetIncomingChanges(Models.Repository repository)
         {
             try
             {
@@ -66,10 +66,10 @@ namespace Watchtower.Git
 
                 if ( git != null && repo != null && fr != null && lr != null )
                 {
-                    List<Watchtower.Model.Changeset> commits = new List<Model.Changeset>();
+                    List<Watchtower.Models.Changeset> commits = new List<Models.Changeset>();
                     foreach(RevCommit rc in lr)
                     {
-                        Watchtower.Model.Changeset c = new Model.Changeset(rc.GetParent(0).GetHashCode().ToString(), rc.GetHashCode().ToString(), rc.GetCommitterIdent().GetEmailAddress(), rc.GetCommitterIdent().GetWhen(), rc.GetCommitterIdent().GetName(), rc.GetFullMessage());
+                        Watchtower.Models.Changeset c = new Models.Changeset(rc.GetParent(0).GetHashCode().ToString(), rc.GetHashCode().ToString(), rc.GetCommitterIdent().GetEmailAddress(), rc.GetCommitterIdent().GetWhen(), rc.GetCommitterIdent().GetName(), rc.GetFullMessage());
                         commits.Add(c);
                     }
                     repository.IncomingChangesets = commits;
@@ -80,25 +80,25 @@ namespace Watchtower.Git
             }
             return repository;
         }
-        public Model.Repository GetOutgoingChanges(Model.Repository repository)
+        public Models.Repository GetOutgoingChanges(Models.Repository repository)
         {
             throw new NotImplementedException();
         }
 
-        public bool PullIncomingChangesets(Model.Repository repository)
+        public bool PullIncomingChangesets(Models.Repository repository)
         {
             throw new NotImplementedException();
         }
-        public bool PushOutgoingChangesets(Model.Repository repository)
+        public bool PushOutgoingChangesets(Models.Repository repository)
         {
             throw new NotImplementedException();
         }
 
-        public bool Merge(Model.Repository repository)
+        public bool Merge(Models.Repository repository)
         {
             throw new NotImplementedException();
         }
-        public bool StartMerge(Model.Repository repository)
+        public bool StartMerge(Models.Repository repository)
         {
             throw new NotImplementedException();
         }

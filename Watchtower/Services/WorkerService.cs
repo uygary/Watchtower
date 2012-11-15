@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight.Ioc;
 
-using Watchtower.Model;
-using Watchtower.View;
+using Watchtower.Models;
+using Watchtower.Views;
 
 namespace Watchtower.Services
 {

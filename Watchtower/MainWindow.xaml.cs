@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 
-using Watchtower.ViewModel;
+using Watchtower.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
 
 namespace Watchtower
@@ -29,10 +29,9 @@ namespace Watchtower
         private void Initialize()
         {
             _trayIcon = new System.Windows.Forms.NotifyIcon();
-            _trayIcon.BalloonTipText = @"Watchtower has been minimised.
-Click the tray icon to show.";
-            _trayIcon.BalloonTipTitle = "Watchtower";
-            _trayIcon.Text = "Watchtower Repository Monitor";
+            _trayIcon.BalloonTipText = Constants.Application.BaloonTip;
+            _trayIcon.BalloonTipTitle = Constants.Application.Title;
+            _trayIcon.Text = Constants.Application.Description;
 
             SwitchToBrightIcon();
             _trayIcon.Visible = true;
@@ -110,7 +109,7 @@ Click the tray icon to show.";
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            SimpleIoc.Default.GetInstance<Watchtower.View.NotificationWindow>().Close();
+            SimpleIoc.Default.GetInstance<Watchtower.Views.NotificationWindow>().Close();
             base.OnClosing(e);
         }
 

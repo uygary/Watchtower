@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Watchtower.Model;
+using Watchtower.Models;
 using System.Collections.ObjectModel;
 
 namespace Watchtower
