@@ -32,23 +32,23 @@
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=2.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Watchtower.Git\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\References\ICSharpCode\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Watchtower.Git\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="NGit">
-      <HintPath>..\References\Watchtower.Git\NGit.dll</HintPath>
+      <HintPath>..\References\NGit\NGit.dll</HintPath>
     </Reference>
     <Reference Include="NSch">
-      <HintPath>..\References\Watchtower.Git\NSch.dll</HintPath>
+      <HintPath>..\References\NGit\NSch.dll</HintPath>
     </Reference>
     <Reference Include="Sharpen">
-      <HintPath>..\References\Watchtower.Git\Sharpen.dll</HintPath>
+      <HintPath>..\References\Sharpen\Sharpen.dll</HintPath>
     </Reference>
     <Reference Include="Sharpen.Unix">
-      <HintPath>..\References\Watchtower.Git\Sharpen.Unix.dll</HintPath>
+      <HintPath>..\References\Sharpen\Sharpen.Unix.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="GitPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

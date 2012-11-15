@@ -1,20 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using NGit;
 using NGit.Api;
 using NGit.Revwalk;
-using NGit.Storage.File;
 using NGit.Transport;
 using Sharpen;
+
 using Watchtower.Core;
 
 namespace Watchtower.Git
 {
-    public class GitPlugin:IPlugin
+    public class GitPlugin : IPlugin
     {
+        public string RepositoryType { get { return Constants.RepositoryType; } }
+
+        public bool VerifyRepository(string path)
+        {
+            bool result = false;
+
+            try
+            {
+                NGit.Api.Git git = NGit.Api.Git.Open(path);
+                Repository repo = git.GetRepository();
+
+                ////Repository repo = new FileRepository(new Sharpen.FilePath(path));
+                ////NGit.Api.Git git = new NGit.Api.Git(repo);
+                //FetchCommand fc = git.Fetch();
+                //FetchResult fr = fc.Call();
+                //LogCommand lc = git.Log();
+                //Iterable<RevCommit> lr = lc.Call();
+
+
+                string indexFile = repo.GetIndexFile();
+                //repo.GetRef();
+                //repo.ReadOrigHead();
+
+                if (null != git && null != repo && !string.IsNullOrEmpty(indexFile))
+                {
+                    result = true;
+                }
+            }
+            catch
+            {
+                result = true;
+            }
+            return result;
+        }
 
         public Model.Repository GetIncomingChanges(Model.Repository repository)
         {
@@ -49,13 +81,7 @@ namespace Watchtower.Git
             }
             return repository;
         }
-
         public Model.Repository GetOutgoingChanges(Model.Repository repository)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Merge(Model.Repository repository)
         {
             throw new NotImplementedException();
         }
@@ -64,53 +90,18 @@ namespace Watchtower.Git
         {
             throw new NotImplementedException();
         }
-
         public bool PushOutgoingChangesets(Model.Repository repository)
         {
             throw new NotImplementedException();
         }
 
-        public string RepositoryType
-        {
-            get { return "Git"; }
-        }
-
-        public bool StartMerge(Model.Repository repository)
+        public bool Merge(Model.Repository repository)
         {
             throw new NotImplementedException();
         }
-
-        public bool VerifyRepository(string path)
+        public bool StartMerge(Model.Repository repository)
         {
-            bool result = false;
-
-            try
-            {
-                NGit.Api.Git git = NGit.Api.Git.Open(path);
-                Repository repo = git.GetRepository();
-
-                ////Repository repo = new FileRepository(new Sharpen.FilePath(path));
-                ////NGit.Api.Git git = new NGit.Api.Git(repo);
-                //FetchCommand fc = git.Fetch();
-                //FetchResult fr = fc.Call();
-                //LogCommand lc = git.Log();
-                //Iterable<RevCommit> lr = lc.Call();
-
-
-                //repo.GetIndexFile();
-                //repo.GetRef();
-                //repo.ReadOrigHead();
-
-                if (git != null && repo != null)
-                {
-                    result = true;
-                }
-            }
-            catch
-            {
-                result = true;
-            }
-            return result;
+            throw new NotImplementedException();
         }
     }
 }
