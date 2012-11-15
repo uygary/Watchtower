@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using NGit;
 using NGit.Api;
 using NGit.Revwalk;
