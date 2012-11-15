@@ -29,9 +29,10 @@ namespace Watchtower
         private void Initialize()
         {
             _trayIcon = new System.Windows.Forms.NotifyIcon();
-            _trayIcon.BalloonTipText = "The app has been minimised. Click the tray icon to show.";
-            _trayIcon.BalloonTipTitle = "The App";
-            _trayIcon.Text = "The App";
+            _trayIcon.BalloonTipText = @"Watchtower has been minimised.
+Click the tray icon to show.";
+            _trayIcon.BalloonTipTitle = "Watchtower";
+            _trayIcon.Text = "Watchtower Repository Monitor";
 
             SwitchToBrightIcon();
             _trayIcon.Visible = true;
@@ -100,6 +101,12 @@ namespace Watchtower
         }
 
         #endregion
+
+
+        private void OnWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
 
         protected override void OnClosing(CancelEventArgs e)
         {

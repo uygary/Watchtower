@@ -10,6 +10,9 @@
 			<ComponentGroupRef Id="ProductComponents" />
 			<ComponentGroupRef Id="PluginComponents" />
 		</Feature>
+    <Feature Id="AutoStart" Title="Autostart Watchtower">
+      <ComponentRef Id="WatchtowerAutoStart" />
+    </Feature>
 	</Product>
 
 	<Fragment>
@@ -52,6 +55,16 @@
         <File Id="NSch.dll" Source="../Watchtower.Git/bin/Release/NSch.dll" />
         <File Id="Sharpen.dll" Source="../Watchtower.Git/bin/Release/Sharpen.dll" />
         <File Id="Sharpen.Unix.dll" Source="../Watchtower.Git/bin/Release/Sharpen.Unix.dll" />
+      </Component>
+      
+      <!-- Auto-start via Registry -->
+      <Component Id="WatchtowerAutoStart" Guid="bc692a30-2f3f-11e2-81c1-0800200c9a66">
+        <Registry Id="Watchtower.rst" Root="HKMU" Action="write"
+                      Key="Software\Microsoft\Windows\CurrentVersion\Run"
+                      Name="Watchtower"
+                      Value="[#Watchtower.exe]"
+                      Type="string" />
+        <Condition>ASSISTANCE_START_VIA_REGISTRY</Condition>
       </Component>
 		</ComponentGroup>
 	</Fragment>
