@@ -31,22 +31,6 @@ namespace Watchtower.ViewModel
         static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            //Bootstrapper bootstrapper = new Bootstrapper();
-
-            //if (ViewModelBase.IsInDesignModeStatic)
-            //{
-            //    SimpleIoc.Default.Register<IDataService, Design.DesignDataService>();
-            //}
-            //else
-            //{
-            //    SimpleIoc.Default.Register<IDataService, DataService>();
-            //}
-            //SimpleIoc.Default.Register<WorkerService>();
-
-            //SimpleIoc.Default.Register<MainViewModel>();
-
-            ////Instantiate WorkerService
-            //SimpleIoc.Default.GetInstance<WorkerService>();
         }
 
         /// <summary>

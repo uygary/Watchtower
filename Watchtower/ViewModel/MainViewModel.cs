@@ -90,21 +90,6 @@ namespace Watchtower.ViewModel
             LoadCommand = new RelayCommand(OnLoad);
             SaveCommand = new RelayCommand(OnSave);
 
-            //_dataService.GetIncomingChanges( "D:\\CODE\\Hess",
-            //    (changesets, error) =>
-            //    {
-            //        if (error != null)
-            //        {
-            //            // Report error here
-            //            return;
-            //        }
-
-            //        if (null != changesets && changesets.Count > 0)
-            //            Changesets = changesets;
-            //        else
-            //            Changesets = new List<Changeset>();
-            //    });
-
             Initialize();
         }
 

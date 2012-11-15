@@ -19,9 +19,11 @@ namespace Watchtower
             try
             {
                 Repository mercurialRepo = new Repository(path);
-                IEnumerable<Changeset> incoming = mercurialRepo.Log();
-                if (null != incoming)
+                IEnumerable<Changeset> changesets = mercurialRepo.Log();
+
+                if (null != changesets)
                     result = true;
+
                 mercurialRepo.Dispose();
             }
             catch
@@ -67,16 +69,63 @@ namespace Watchtower
 
         public bool PullIncomingChangesets(Watchtower.Model.Repository repository)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                Repository mercurialRepo = new Repository(repository.Path);
+                mercurialRepo.Pull();
+                //mercurialRepo.Update();
+                mercurialRepo.Dispose();
+                result = true;
+            }
+            catch
+            {
+
+            }
+
+            return result;
         }
         public bool PushOutgoingChangesets(Watchtower.Model.Repository repository)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                Repository mercurialRepo = new Repository(repository.Path);
+                mercurialRepo.Push();
+                mercurialRepo.Dispose();
+
+                result = true;
+            }
+            catch
+            {
+
+            }
+
+            return result;
         }
 
         public bool Merge(Watchtower.Model.Repository repository)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                Repository mercurialRepo = new Repository(repository.Path);
+                MergeResult mergeResult = mercurialRepo.Merge();
+
+                if (!mergeResult.HasFlag(MergeResult.UnresolvedFiles))
+                    result = true;
+
+                mercurialRepo.Dispose();
+            }
+            catch
+            {
+
+            }
+
+            return result;
         }
         public bool StartMerge(Watchtower.Model.Repository repository)
         {

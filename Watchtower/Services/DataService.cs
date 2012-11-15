@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Community.CsharpSqlite.SQLiteClient;
@@ -64,14 +63,12 @@ namespace Watchtower.Services
         {
             List<ExtendedRepository> result = new List<ExtendedRepository>();
 
-            string dbFileName = @"Configuration.db";
-            //if (!File.Exists(dbFileName))
+            //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();
 
             //Create connection
             SqliteConnection connection = new SqliteConnection();
-            string connectionString = string.Format("Version=3,uri=file:{0}", dbFileName);
-            connection.ConnectionString = connectionString;
+            connection.ConnectionString = Constants.Configuration.ConnectionString;
 
             //Open database
             connection.Open();
@@ -100,14 +97,12 @@ namespace Watchtower.Services
         }
         public void UpdateRepositories(IEnumerable<ExtendedRepository> repositories)
         {
-            string dbFileName = @"Configuration.db";
-            //if (!File.Exists(dbFileName))
+            //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();
 
             //Create connection
             SqliteConnection connection = new SqliteConnection();
-            string connectionString = string.Format("Version=3,uri=file:{0}", dbFileName);
-            connection.ConnectionString = connectionString;
+            connection.ConnectionString = Constants.Configuration.ConnectionString;
 
             //Open database
             connection.Open();
@@ -156,47 +151,71 @@ namespace Watchtower.Services
         }
         public void InitializeDatabase()
         {
-            string dbFileName = @"Configuration.db";
-
-            if (File.Exists(dbFileName))
-                //File.Delete(dbFileName);
+            if (File.Exists(Constants.Configuration.DbFileName))
+                //File.Delete(Constants.Configuration.DbFileName);
                 return;
-
-            string connectionString = string.Format("Version=3,uri=file:{0}", dbFileName);
 
             //Create connection
             SqliteConnection connection = new SqliteConnection();
-            connection.ConnectionString = connectionString;
+            connection.ConnectionString = Constants.Configuration.ConnectionString;
 
             //Open database
             connection.Open();
 
+            IDbCommand cmd;
+            IDbDataParameter prm;
+
+            #region Create Tables
             //create command
-            IDbCommand cmd = connection.CreateCommand();
+            cmd = connection.CreateCommand();
 
             //create Repositories table
             cmd.CommandText = "CREATE TABLE Repositories ( Path TEXT PRIMARY KEY, Name TEXT, RepoType TEXT )";
             cmd.ExecuteNonQuery();
 
+            cmd = connection.CreateCommand();
+
             //create Configuration table and set initial values
             cmd.CommandText = "CREATE TABLE Configuration ( Key TEXT, Value TEXT )";
             cmd.ExecuteNonQuery();
+            #endregion
+
 
             //Set initial configuration values
-            //cmd.CommandText = string.Format("INSERT INTO Configuration ( Key, Value ) VALUES ( '{0}', {1} )", Constants.PeriodKey, Constants.PeriodValue);
-            cmd.CommandText = "INSERT INTO Configuration ( Key, Value ) VALUES ( @Key, @Value )";
 
-            IDbDataParameter prm;
+            #region Insert update period
+            cmd = connection.CreateCommand();
+            cmd.CommandText = "INSERT INTO Configuration ( Key, Value ) VALUES ( @Key, @Value )";
 
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Key";
-            prm.Value = Constants.PeriodKey;
+            prm.Value = Constants.Configuration.PeriodKey;
+            cmd.Parameters.Add(prm);
 
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Value";
-            prm.Value = Constants.PeriodValue;
+            prm.Value = Constants.Configuration.PeriodValue;
+            cmd.Parameters.Add(prm);
 
             cmd.ExecuteNonQuery();
+            #endregion
+
+            #region Insert sequential update option
+            cmd = connection.CreateCommand();
+            cmd.CommandText = "INSERT INTO Configuration ( Key, Value ) VALUES ( @Key, @Value )";
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Key";
+            prm.Value = Constants.Configuration.SequentialUpdateKey;
+            cmd.Parameters.Add(prm);
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Value";
+            prm.Value = Constants.Configuration.SequentialUpdateValue;
+            cmd.Parameters.Add(prm);
+
+            cmd.ExecuteNonQuery();
+            #endregion
 
             //Close and cleanup
             connection.Close();
@@ -204,31 +223,48 @@ namespace Watchtower.Services
         }
         public ConfigData ReadConfiguration()
         {
-            ConfigData result = new ConfigData(Constants.PeriodValue);
+            ConfigData result = new ConfigData(Constants.Configuration.PeriodValue, true);
 
-            string dbFileName = @"Configuration.db";
-            //if (!File.Exists(dbFileName))
+            //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();
 
             //Create connection
             SqliteConnection connection = new SqliteConnection();
-            string connectionString = string.Format("Version=3,uri=file:{0}", dbFileName);
-            connection.ConnectionString = connectionString;
+            connection.ConnectionString = Constants.Configuration.ConnectionString;
 
             //Open database
             connection.Open();
 
+            IDbCommand cmd;
+            IDataReader reader;
+
+            #region Read update period
             //create command
-            IDbCommand cmd = connection.CreateCommand();
+            cmd = connection.CreateCommand();
 
             //Select repositories
-            cmd.CommandText = string.Format("SELECT * FROM Configuration WHERE KEY='{0}'", Constants.PeriodKey);
-            IDataReader reader = cmd.ExecuteReader();
+            cmd.CommandText = string.Format("SELECT * FROM Configuration WHERE KEY='{0}'", Constants.Configuration.PeriodKey);
+            reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 int period = reader.GetInt16(reader.GetOrdinal("Value"));
                 result.UpdatePeriod = period;
             }
+            #endregion
+
+            #region Read sequential update option
+            //create command
+            cmd = connection.CreateCommand();
+
+            //Select repositories
+            cmd.CommandText = string.Format("SELECT * FROM Configuration WHERE KEY='{0}'", Constants.Configuration.SequentialUpdateKey);
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                bool sequential = reader.GetBoolean(reader.GetOrdinal("Value"));
+                result.SequentialUpdate = sequential;
+            }
+            #endregion
 
             //Close and cleanup
             connection.Close();
@@ -238,26 +274,24 @@ namespace Watchtower.Services
         }
         public void UpdateConfiguration(ConfigData configData)
         {
-            string dbFileName = @"Configuration.db";
-            //if (!File.Exists(dbFileName))
+            //if (!File.Exists(Constants.Configuration.DbFileName))
             //    InitializeDatabase();
 
             //Create connection
             SqliteConnection connection = new SqliteConnection();
-            string connectionString = string.Format("Version=3,uri=file:{0}", dbFileName);
-            connection.ConnectionString = connectionString;
+            connection.ConnectionString = Constants.Configuration.ConnectionString;
 
             //Open database
             connection.Open();
 
-            //create command
-            IDbCommand cmd = connection.CreateCommand();
-
-            //clear REPOSITORIES table
-            //cmd.CommandText = string.Format("UPDATE Configuration SET Value='{0}' WHERE Key='{1}'", configData.UpdatePeriod, Constants.PeriodKey);
-            cmd.CommandText = "UPDATE Configuration SET Value='{0}' WHERE Key='{1}'";
-
+            IDbCommand cmd;
             IDbDataParameter prm;
+
+            #region Save update period
+            //create command
+            cmd = connection.CreateCommand();
+
+            cmd.CommandText = "UPDATE Configuration SET Value=@Value WHERE Key=@Key";
 
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Value";
@@ -265,9 +299,27 @@ namespace Watchtower.Services
 
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Key";
-            prm.Value = Constants.PeriodKey;
+            prm.Value = Constants.Configuration.PeriodKey;
 
             cmd.ExecuteNonQuery();
+            #endregion
+
+            #region Save sequential update option
+            //create command
+            cmd = connection.CreateCommand();
+
+            cmd.CommandText = "UPDATE Configuration SET Value=@Value WHERE Key=@Key";
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Value";
+            prm.Value = configData.SequentialUpdate;
+
+            prm = cmd.CreateParameter();
+            prm.ParameterName = "@Key";
+            prm.Value = Constants.Configuration.SequentialUpdateKey;
+
+            cmd.ExecuteNonQuery();
+            #endregion
 
             //Close and cleanup
             connection.Close();

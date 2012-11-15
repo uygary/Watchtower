@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 using Watchtower.Core;
@@ -45,17 +44,7 @@ namespace Watchtower.Services
 
                     if (!Plugins.ContainsKey(plugin.RepositoryType))
                         Plugins.Add(plugin.RepositoryType, plugin);
-
                 }
-
-                //Type type = assembly.GetType("Watchtower.Plugin");
-                //if (null != type)
-                //{
-                //    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-
-                //    if (!Plugins.ContainsKey(plugin.RepositoryType))
-                //        Plugins.Add(plugin.RepositoryType, plugin);
-                //}
             }
         }
 

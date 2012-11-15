@@ -25,7 +25,7 @@ namespace Watchtower.Design
         public IList<ExtendedRepository> ReadRepositories() { return new List<ExtendedRepository>(); }
         public void UpdateRepositories(IEnumerable<ExtendedRepository> repositories) { }
         public void InitializeDatabase() { }
-        public ConfigData ReadConfiguration() { return new ConfigData(Constants.PeriodValue); }
+        public ConfigData ReadConfiguration() { return new ConfigData(Constants.Configuration.PeriodValue, false); }
         public void UpdateConfiguration(ConfigData configData) { }
         #endregion
     }

@@ -111,6 +111,7 @@ namespace Watchtower
         public void Dispose()
         {
             _trayIcon.Dispose();
+            _trayIcon = null;
             //Dispose(true);
             //GC.SuppressFinalize(this);
         }
