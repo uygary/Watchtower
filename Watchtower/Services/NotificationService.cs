@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows;
 using GalaSoft.MvvmLight.Ioc;
 
-using Watchtower.Models;
 using Watchtower.Views;
 
 namespace Watchtower.Services

@@ -131,6 +131,13 @@ namespace Watchtower.Services
     }
 
 
+    public enum WorkerProgress
+    {
+        Idle,
+        Active
+    }
+
+
     #region Events
 
     #region Repository update event
@@ -160,5 +167,4 @@ namespace Watchtower.Services
     #endregion
 
     #endregion
-
 }
