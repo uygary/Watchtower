@@ -22,9 +22,6 @@ namespace Watchtower.Services
 
         private void Initialize()
         {
-            //TODO: Do we really need this ugly workaround in order to ensure the type initializer is run?
-            string workaround = System.IO.Packaging.PackUriHelper.UriSchemePack;
-
             _trayIcon = new System.Windows.Forms.NotifyIcon();
             _trayIcon.BalloonTipText = Constants.Application.BaloonTip;
             _trayIcon.BalloonTipTitle = Constants.Application.Title;

@@ -3,8 +3,8 @@ using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
 using Watchtower.Services;
-using Watchtower.Views;
 using Watchtower.ViewModels;
+using Watchtower.Views;
 
 namespace Watchtower
 {
@@ -12,12 +12,16 @@ namespace Watchtower
     {
         public Bootstrapper()
         {
+            //TODO: Do we really need this ugly workaround in order to ensure the type initializer is run?
+            string workaround = System.IO.Packaging.PackUriHelper.UriSchemePack;
+
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             RegisterServices();
-            InstantiateServices();
             RegisterViewModels();
             RegisterViews();
+
+            InstantiateServices();
         }
 
         private void RegisterServices()
