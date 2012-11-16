@@ -12,11 +12,23 @@ namespace Watchtower.Services
     public class WorkerService
     {
         public event IncomingChangesDetectedEventHandler IncomingChangesDetected;
+        public event ProgressChangedEventHandler ProgressChanged;
         private readonly IDataService _dataService;
         private DispatcherTimer _timer;
         private bool _workSequential;
         private List<ExtendedRepository> _repositoriesToCheck;
         private Dictionary<string, ExtendedRepository> _updatedRepositories;
+
+        private WorkerProgress _progress;
+        public WorkerProgress Progress
+        {
+            get { return _progress; }
+            set
+            {
+                _progress = value;
+                OnProgressChanged();
+            }
+        }
 
         public WorkerService(IDataService dataService)
         {
@@ -41,6 +53,7 @@ namespace Watchtower.Services
 
         private void OnTimerTick(object sender, EventArgs e)
         {
+            Progress = WorkerProgress.Active;
             _updatedRepositories.Clear();
             _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
         }
@@ -49,6 +62,12 @@ namespace Watchtower.Services
 
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
         {
+            if (null == repositories || repositories.Count == 0)
+            {
+                Progress = WorkerProgress.Idle;
+                return;
+            }
+
             foreach (ExtendedRepository repo in repositories)
             {
                 _repositoriesToCheck.Add(repo);
@@ -87,32 +106,32 @@ namespace Watchtower.Services
                 ExtendedRepository firstRepo = _repositoriesToCheck[0];
                 _dataService.BeginGetIncomingChanges(firstRepo, OnGetIncomingChangesCompleted);
             }
-            else if (_updatedRepositories.Count > 0)
+            else
             {
-                OnIncomingChangesDetected();
+                Progress = WorkerProgress.Idle;
+
+                if (_updatedRepositories.Count > 0)
+                    OnIncomingChangesDetected();
             }
         }
 
         #endregion
 
 
-        #region OnIncomingChangesDetected
-
         private void OnIncomingChangesDetected()
         {
-            //Show NotificationWindow.
-            NotificationWindow nv = SimpleIoc.Default.GetInstance<NotificationWindow>();
-            nv.FadeIn();
-
-            //Fire event.
             if (null != IncomingChangesDetected)
                 IncomingChangesDetected(this, new IncomingChangesDetectedEventArgs(new ObservableCollection<ExtendedRepository>(_updatedRepositories.Values)));
         }
-
-        #endregion
-
+        private void OnProgressChanged()
+        {
+            if (null != ProgressChanged)
+                ProgressChanged(this, new ProgressChangedEventArgs(Progress));
+        }
     }
 
+
+    #region Events
 
     #region Repository update event
     public delegate void IncomingChangesDetectedEventHandler(object sender, IncomingChangesDetectedEventArgs e);
@@ -123,8 +142,23 @@ namespace Watchtower.Services
             Repositories = repositories;
         }
 
-        public ObservableCollection<ExtendedRepository> Repositories { get; set; }
+        public readonly ObservableCollection<ExtendedRepository> Repositories;
     }
+    #endregion
+
+    #region Progress change event
+    public delegate void ProgressChangedEventHandler(object sender, ProgressChangedEventArgs e);
+    public class ProgressChangedEventArgs : EventArgs
+    {
+        public ProgressChangedEventArgs(WorkerProgress workerProgress)
+        {
+            WorkerProgress = workerProgress;
+        }
+
+        public readonly WorkerProgress WorkerProgress;
+    }
+    #endregion
+
     #endregion
 
 }

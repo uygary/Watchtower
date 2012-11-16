@@ -29,48 +29,62 @@ namespace Watchtower.Services
         public void BeginGetRepositories(Action<IList<ExtendedRepository>, Exception> callback)
         {
             IList<ExtendedRepository> reposOrderedByName = null;
-            Exception ex = null;
+            Exception exception = null;
 
             try
             {
                 IList<ExtendedRepository> repos = ReadRepositories();
                 reposOrderedByName = new List<ExtendedRepository>(from ExtendedRepository r in repos orderby r.Name select r);
             }
-            catch(Exception e)
+            catch(Exception ex)
             {
-                ex = e;
+                exception = ex;
             }
             finally
             {
-                callback(reposOrderedByName, ex);
+                //Return data
+                callback(reposOrderedByName, exception);
             }
         }
         public void BeginGetIncomingChanges(ExtendedRepository repository, Action<ExtendedRepository, Exception> callback)
         {
-            //Get incoming changesets
-            IPlugin rcsPlugin = _pluginService.Plugins[repository.Type];
-            ExtendedRepository result = RepositoryExtensionHelper.GetExtendedRepository(rcsPlugin.GetIncomingChanges(RepositoryExtensionHelper.GetRepository(repository)));
+            ExtendedRepository result = null;
+            Exception exception = null;
 
-            //Get Gravatars
-            foreach (ExtendedChangeset changeset in result.IncomingChangesets)
+            try
             {
-                string author = changeset.AuthorEmail;
-                if (_gravatars.ContainsKey(author))
+                //Get incoming changesets
+                IPlugin rcsPlugin = _pluginService.Plugins[repository.Type];
+                result = RepositoryExtensionHelper.GetExtendedRepository(rcsPlugin.GetIncomingChanges(RepositoryExtensionHelper.GetRepository(repository)));
+
+                //Get Gravatars
+                foreach (ExtendedChangeset changeset in result.IncomingChangesets)
                 {
-                    changeset.Gravatar = _gravatars[author];
-                }
-                else
-                {
-                    BitmapImage gravatar = GravatarHelper.GetBitmapImage(author, rating : GravatarRating.X);
-                    if (null != gravatar)
+                    string author = changeset.AuthorEmail;
+                    if (_gravatars.ContainsKey(author))
                     {
-                        _gravatars.Add(author, gravatar);
-                        changeset.Gravatar = gravatar;
+                        changeset.Gravatar = _gravatars[author];
+                    }
+                    else
+                    {
+                        BitmapImage gravatar = GravatarHelper.GetBitmapImage(author, rating: GravatarRating.X);
+                        if (null != gravatar)
+                        {
+                            _gravatars.Add(author, gravatar);
+                            changeset.Gravatar = gravatar;
+                        }
                     }
                 }
             }
-            //Return data
-            callback(result, null);
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            finally
+            {
+                //Return data
+                callback(result, exception);
+            }
         }
 
         #region DB related methods

@@ -37,6 +37,9 @@ namespace Watchtower
 
             //Register WorkerService
             SimpleIoc.Default.Register<WorkerService>();
+
+            //Register NotificationService
+            SimpleIoc.Default.Register<NotificationService>();
         }
         private void InstantiateServices()
         {
@@ -48,6 +51,9 @@ namespace Watchtower
 
             //Instantiate PluginService
             SimpleIoc.Default.GetInstance<PluginService>();
+
+            //Instantiate NotificationService
+            SimpleIoc.Default.GetInstance<NotificationService>();
         }
         private void RegisterViewModels()
         {
