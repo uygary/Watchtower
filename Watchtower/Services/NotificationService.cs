@@ -10,6 +10,7 @@ namespace Watchtower.Services
     public class NotificationService : IDisposable
     {
         private WorkerService _workerService;
+        private NotificationWindow _notificationWindow;
         internal System.Windows.Forms.NotifyIcon _trayIcon;
 
         public NotificationService(WorkerService workerService)
@@ -29,6 +30,7 @@ namespace Watchtower.Services
             SwitchTrayIcon(_workerService.Progress);
             _trayIcon.Visible = true;
 
+            _notificationWindow = SimpleIoc.Default.GetInstance<NotificationWindow>();
             _workerService.IncomingChangesDetected += OnIncomingChangesDetected;
             _workerService.ProgressChanged += OnWorkerServiceProgressChanged;
         }
@@ -36,8 +38,8 @@ namespace Watchtower.Services
         private void ShowNotificationWindow()
         {
             //Show NotificationWindow.
-            NotificationWindow nv = SimpleIoc.Default.GetInstance<NotificationWindow>();
-            nv.FadeIn();
+            _notificationWindow = SimpleIoc.Default.GetInstance<NotificationWindow>();
+            _notificationWindow.FadeIn();
         }
         private void SwitchTrayIcon(WorkerProgress workerProgress)
         {

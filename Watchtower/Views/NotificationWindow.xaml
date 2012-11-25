@@ -64,7 +64,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <TextBlock Text="Incoming Cganges Found" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" />
+                    <TextBlock Text="Incoming Chhanges Found" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" />
                     <Button HorizontalAlignment="Right" Width="16" Click="ClosePopup">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">

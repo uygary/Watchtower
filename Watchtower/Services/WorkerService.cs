@@ -46,6 +46,7 @@ namespace Watchtower.Services
             int period = _dataService.GetConfiguration().UpdatePeriod;
             _timer = new DispatcherTimer();
             _timer.Interval = new TimeSpan(0, period, 0);
+            //_timer.Interval = new TimeSpan(0, 0, 5);
             _timer.Tick += new EventHandler(OnTimerTick);
 
             _timer.Start();
@@ -53,6 +54,7 @@ namespace Watchtower.Services
 
         private void OnTimerTick(object sender, EventArgs e)
         {
+            //_timer.Stop();
             Progress = WorkerProgress.Active;
             _updatedRepositories.Clear();
             _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
