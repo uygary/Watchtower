@@ -39,17 +39,25 @@ namespace Watchtower.Services
             {
                 Assembly assembly = Assembly.LoadFile(fileName);
 
-                var plugins = assembly.GetTypes().Where(p => iType.IsAssignableFrom(p) && p.IsClass);
-                if (null != plugins && plugins.Count() > 0)
+                //TODO: Find out why this would throw on "some" computers.
+                try
                 {
-                    var pType = plugins.First();
-                    IPlugin plugin = (IPlugin)Activator.CreateInstance(pType);
+                    var plugins = assembly.GetTypes().Where(p => iType.IsAssignableFrom(p) && p.IsClass);
+                    if (null != plugins && plugins.Count() > 0)
+                    {
+                        var pType = plugins.First();
+                        IPlugin plugin = (IPlugin)Activator.CreateInstance(pType);
 
-                    if (!Plugins.ContainsKey(plugin.RepositoryType))
-                        Plugins.Add(plugin.RepositoryType, plugin);
+                        if (!Plugins.ContainsKey(plugin.RepositoryType))
+                            Plugins.Add(plugin.RepositoryType, plugin);
 
-                    var i = plugin.PluginIcon;
+                        var i = plugin.PluginIcon;
+                    }
                 }
+                catch(Exception ex)
+                {
+                }
+
             }
         }
 
