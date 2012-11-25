@@ -1,18 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 using NGit;
 using NGit.Api;
 using NGit.Revwalk;
 using NGit.Transport;
 using Sharpen;
-
 using Watchtower.Core;
 
 namespace Watchtower.Git
 {
     public class Plugin : IPlugin
     {
+        private static BitmapImage _pluginIcon;
+
         public string RepositoryType { get { return Constants.RepositoryType; } }
+        public BitmapImage PluginIcon
+        {
+            get
+            {
+                if (null == _pluginIcon)
+                    _pluginIcon = PluginIconHelper.GetPluginIcon(Constants.PluginID, "Images/Icon.png");
+
+                return _pluginIcon;
+            }
+        }
 
         public bool VerifyRepository(string path)
         {

@@ -29,6 +29,9 @@ namespace Watchtower.Services
         {
             string pluginsFolder = @".\Plugins\";
             string fullPath = Path.GetFullPath(pluginsFolder);
+            if (!Directory.Exists(fullPath))
+                Directory.CreateDirectory(fullPath);
+
             string[] pluginFileNames = Directory.GetFiles(fullPath, "*.dll");
 
             var iType = typeof(IPlugin);
@@ -44,6 +47,8 @@ namespace Watchtower.Services
 
                     if (!Plugins.ContainsKey(plugin.RepositoryType))
                         Plugins.Add(plugin.RepositoryType, plugin);
+
+                    var i = plugin.PluginIcon;
                 }
             }
         }
@@ -57,6 +62,7 @@ namespace Watchtower.Services
                 if (plugin.VerifyRepository(repository.Path))
                 {
                     repository.Type = plugin.RepositoryType;
+                    repository.PluginIcon = plugin.PluginIcon;
                     result = true;
                     break;
                 }

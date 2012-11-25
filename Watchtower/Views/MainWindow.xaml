@@ -7,8 +7,7 @@
     xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF4"
     xmlns:ignore="http://www.ignore.com"
     mc:Ignorable="d ignore"
-    Height="400"
-    Width="320"
+    Height="480" Width="400"
     AllowDrop="True"
     Title="Watchtower Source Control Monitor"
     Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Loaded="OnWindowLoaded"
@@ -17,7 +16,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
+                <ResourceDictionary Source="/Skins/MainSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -41,7 +40,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ListBox x:Name="RepositoriesListBox" ItemsSource="{Binding Repositories, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" BorderThickness="0">
+            <ListBox x:Name="RepositoriesListBox" ItemsSource="{Binding Repositories, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,0,0,8">
@@ -50,22 +49,20 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="32" />
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="Images/Repository.png" Width="48" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                            <Grid Grid.Column="1">
+                            <Grid Grid.Column="0">
+                                <Image Source="/Images/Repository.png" Width="48" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                <Image Source="{Binding PluginIcon}" Width="20" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                            </Grid>
+                            <Grid Grid.Column="1" Margin="2,0">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="18" />
                                     <RowDefinition Height="16" />
                                 </Grid.RowDefinitions>
-                                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name, Mode=TwoWay}" Margin="2,0,2,0" FontSize="14" FontWeight="Bold" />
-                                    <TextBlock Text="(" Margin="6,0,0,0" FontSize="11" VerticalAlignment="Bottom" />
-                                    <TextBlock Text="{Binding Type, Mode=TwoWay}" Margin="0,0,0,0" FontSize="11" VerticalAlignment="Bottom" />
-                                    <TextBlock Text=")" Margin="0,0,2,0" FontSize="11" VerticalAlignment="Bottom" />
-                                </StackPanel>
-                                <TextBlock Grid.Row="1" Text="{Binding Path, Mode=TwoWay}" Margin="2,0,2,0" />
+                                <TextBlock Grid.Row="0" Text="{Binding Name, Mode=TwoWay}" FontSize="14" FontWeight="Bold" />
+                                <TextBlock Grid.Row="1" Text="{Binding Path, Mode=TwoWay}" />
                             </Grid>
                             <Button Grid.Column="2" Command="{Binding Path=Main.DeleteCommand, Source={StaticResource Locator}}" CommandParameter="{Binding .}" Padding="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                <Image Source="Images/Delete.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                                <Image Source="/Images/Delete.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
                             </Button>
                         </Grid>
                     </DataTemplate>

@@ -16,8 +16,8 @@
         }
         internal struct Application
         {
-            internal const string Title = "";
-            internal const string Description = "";
+            internal const string Title = "Watchtower";
+            internal const string Description = "Repository Monitor";
             internal const string BaloonTip = @"Watchtower has been minimised.
 Click the tray icon to show.";
         }

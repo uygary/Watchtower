@@ -1,4 +1,5 @@
-﻿using Watchtower.Models;
+﻿using System.Windows.Media.Imaging;
+using Watchtower.Models;
 
 namespace Watchtower.Core
 {
@@ -9,6 +10,11 @@ namespace Watchtower.Core
         /// Cleartext name or preferably initials of the source control system should be returned.
         /// </summary>
         string RepositoryType { get; }
+
+        /// <summary>
+        /// Icon used for the repository type handled by plugin.
+        /// </summary>
+        BitmapImage PluginIcon { get; }
 
         /// <summary>
         /// Checks the repository to see if it belongs to the revision control system in question.

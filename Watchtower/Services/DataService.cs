@@ -115,6 +115,7 @@ namespace Watchtower.Services
                 string type = reader.GetString(reader.GetOrdinal("RepoType"));
                 ExtendedRepository repo = new ExtendedRepository(type, path);
                 repo.Name = name;
+                repo.PluginIcon = _pluginService.Plugins[type].PluginIcon;
                 result.Add(repo);
             }
 
@@ -290,7 +291,8 @@ namespace Watchtower.Services
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                bool sequential = reader.GetBoolean(reader.GetOrdinal("Value"));
+                int index = reader.GetOrdinal("Value");
+                bool sequential = reader.GetBoolean(index);
                 result.SequentialUpdate = sequential;
             }
             #endregion
@@ -342,10 +344,12 @@ namespace Watchtower.Services
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Value";
             prm.Value = configData.SequentialUpdate;
+            cmd.Parameters.Add(prm);
 
             prm = cmd.CreateParameter();
             prm.ParameterName = "@Key";
             prm.Value = Constants.Configuration.SequentialUpdateKey;
+            cmd.Parameters.Add(prm);
 
             cmd.ExecuteNonQuery();
             #endregion

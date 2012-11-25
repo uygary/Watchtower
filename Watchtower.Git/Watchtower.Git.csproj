@@ -45,6 +45,7 @@
     <Reference Include="NSch">
       <HintPath>..\References\NGit\NSch.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="Sharpen">
       <HintPath>..\References\Sharpen\Sharpen.dll</HintPath>
     </Reference>
@@ -53,11 +54,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -71,9 +74,12 @@
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir ..\..\..\Watchtower\bin\Debug\Plugins
+    <PostBuildEvent>mkdir ..\Watchtower\bin\Debug\Plugins
 copy $(TargetDir)*.dll ..\..\..\Watchtower\bin\Debug\Plugins\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
