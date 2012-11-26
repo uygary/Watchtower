@@ -86,7 +86,6 @@ namespace Watchtower.Services
                 _trayIcon.Visible = false;
                 _trayIcon.Dispose();
                 _trayIcon = null;
-                _workerService = null;
                 GC.SuppressFinalize(this);
             }
         }

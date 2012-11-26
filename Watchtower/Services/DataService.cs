@@ -277,7 +277,8 @@ namespace Watchtower.Services
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                int period = reader.GetInt16(reader.GetOrdinal("Value"));
+                int index = reader.GetOrdinal("Value");
+                int period = reader.GetInt16(index);
                 result.UpdatePeriod = period;
             }
             #endregion

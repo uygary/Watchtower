@@ -28,18 +28,29 @@ namespace Watchtower.Services
         private void Initialize()
         {
             string pluginsFolder = @".\Plugins\";
-            string fullPath = Path.GetFullPath(pluginsFolder);
-            if (!Directory.Exists(fullPath))
-                Directory.CreateDirectory(fullPath);
+            string pluginsFolderFullPath = Path.GetFullPath(pluginsFolder);
+            if (!Directory.Exists(pluginsFolderFullPath))
+                Directory.CreateDirectory(pluginsFolderFullPath);
+            
+            RegisterPlugins(pluginsFolderFullPath);
 
-            string[] pluginFileNames = Directory.GetFiles(fullPath, "*.dll");
+            string[] pluginSubdirectories = Directory.GetDirectories(pluginsFolderFullPath);
+            foreach (string pluginSubdirectory in pluginSubdirectories)
+            {
+                RegisterPlugins(pluginSubdirectory);
+            }
+        }
+
+        private void RegisterPlugins(string directoryFullPath)
+        {
+            string[] pluginFileNames = Directory.GetFiles(directoryFullPath, "*.dll");
 
             var iType = typeof(IPlugin);
             foreach (string fileName in pluginFileNames)
             {
                 Assembly assembly = Assembly.LoadFile(fileName);
 
-                //TODO: Find out why this would throw on "some" computers.
+                //TODO: Find out why this would throw on "some" environments.
                 try
                 {
                     var plugins = assembly.GetTypes().Where(p => iType.IsAssignableFrom(p) && p.IsClass);
@@ -50,11 +61,9 @@ namespace Watchtower.Services
 
                         if (!Plugins.ContainsKey(plugin.RepositoryType))
                             Plugins.Add(plugin.RepositoryType, plugin);
-
-                        var i = plugin.PluginIcon;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                 }
 

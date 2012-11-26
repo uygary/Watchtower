@@ -21,5 +21,10 @@
             internal const string BaloonTip = @"Watchtower has been minimised.
 Click the tray icon to show.";
         }
+        internal struct Strings
+        {
+            internal const string Checking = "Checking";
+            internal const string Ready = "Ready";
+        }
     }
 }

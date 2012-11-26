@@ -69,19 +69,21 @@ namespace Watchtower.Git
 
                 //Repository repo = new FileRepository(new Sharpen.FilePath(path));
                 //NGit.Api.Git git = new NGit.Api.Git(repo);
+                
+                //TODO: Find out how git works really, and fix this.
                 FetchCommand fc = git.Fetch();
                 FetchResult fr = fc.Call();
                 LogCommand lc = git.Log();
                 Iterable<RevCommit> lr = lc.Call();
 
 
-
                 if ( git != null && repo != null && fr != null && lr != null )
                 {
-                    List<Watchtower.Models.Changeset> commits = new List<Models.Changeset>();
+                    List<Watchtower.Models.Changeset> commits = new List<Watchtower.Models.Changeset>();
                     foreach(RevCommit rc in lr)
                     {
-                        Watchtower.Models.Changeset c = new Models.Changeset(rc.GetParent(0).GetHashCode().ToString(), rc.GetHashCode().ToString(), rc.GetCommitterIdent().GetEmailAddress(), rc.GetCommitterIdent().GetWhen(), rc.GetCommitterIdent().GetName(), rc.GetFullMessage());
+                        //TODO: Find out if these values are right.
+                        Watchtower.Models.Changeset c = new Watchtower.Models.Changeset(rc.GetParent(0).GetHashCode().ToString(), rc.GetHashCode().ToString(), rc.GetCommitterIdent().GetEmailAddress(), rc.GetCommitterIdent().GetWhen(), rc.GetCommitterIdent().GetName(), rc.GetFullMessage());
                         commits.Add(c);
                     }
                     repository.IncomingChangesets = commits;

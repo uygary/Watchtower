@@ -33,7 +33,7 @@ namespace Watchtower.ViewModels
         /// The <see cref="Status" /> property's name.
         /// </summary>
         public const string StatusPropertyName = "Status";
-        private string _status = "Ready";
+        private string _status;
         /// <summary>
         /// Sets and gets the Status property.
         /// Changes to that property's value raise the PropertyChanged event. 
@@ -43,7 +43,7 @@ namespace Watchtower.ViewModels
             get { return _status; }
             set
             {
-                if (_status == value)
+                if (string.Equals(_status, value))
                     return;
 
                 RaisePropertyChanging(RepositoriesPropertyName);
@@ -56,7 +56,7 @@ namespace Watchtower.ViewModels
         /// The <see cref="Repositories" /> property's name.
         /// </summary>
         public const string RepositoriesPropertyName = "Repositories";
-        private ObservableCollection<ExtendedRepository> _repositories = new ObservableCollection<ExtendedRepository>();
+        private ObservableCollection<ExtendedRepository> _repositories;
         /// <summary>
         /// Sets and gets the Repositories property.
         /// Changes to that property's value raise the PropertyChanged event. 
@@ -84,34 +84,31 @@ namespace Watchtower.ViewModels
             _dataService = dataService;
             _pluginService = SimpleIoc.Default.GetInstance<PluginService>();
             _workerService = SimpleIoc.Default.GetInstance<WorkerService>();
+            Status = Constants.Strings.Ready;
 
-            DragEnterCommand = new RelayCommand<DragEventArgs>(OnDragEnter);
-            DragLeaveCommand = new RelayCommand<DragEventArgs>(OnDragLeave);
-            DropCommand = new RelayCommand<DragEventArgs>(OnDrop);
             DeleteCommand = new RelayCommand<object>(DeleteRepository);
             LoadCommand = new RelayCommand(LoadRepositories);
             SaveCommand = new RelayCommand(SaveRepositories);
+            DragEnterCommand = new RelayCommand<DragEventArgs>(OnDragEnter);
+            DragLeaveCommand = new RelayCommand<DragEventArgs>(OnDragLeave);
+            DropCommand = new RelayCommand<DragEventArgs>(OnDrop);
+
+            _workerService.ProgressChanged += OnWorkerServiceProgressChanged;
 
             Initialize();
         }
 
         private void Initialize()
         {
+            Repositories = new ObservableCollection<ExtendedRepository>();
             LoadRepositories();
         }
-
-        private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
-        {
-            Repositories = new ObservableCollection<ExtendedRepository>(repositories);
-        }
-
 
         private void DeleteRepository(object o)
         {
             ExtendedRepository repo = (ExtendedRepository)o;
             Repositories.Remove(repo);
         }
-
         private void LoadRepositories()
         {
             _dataService.BeginGetRepositories(OnGetRepositoriesCompleted);
@@ -121,6 +118,17 @@ namespace Watchtower.ViewModels
             _dataService.SaveRepositories(Repositories);
         }
 
+        private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
+        {
+            Repositories = new ObservableCollection<ExtendedRepository>(repositories);
+        }
+        private void OnWorkerServiceProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            if (e.WorkerProgress == WorkerProgress.Active)
+                Status = Constants.Strings.Checking;
+            else
+                Status = Constants.Strings.Ready;
+        }
 
         #region Drag and drop related methods
 
@@ -173,7 +181,6 @@ namespace Watchtower.ViewModels
         }
 
         #endregion
-
 
 
         ////public override void Cleanup()
