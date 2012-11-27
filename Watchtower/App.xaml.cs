@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
@@ -21,6 +22,14 @@ namespace Watchtower
 
             //FIXME: AppendPrivatePath is deprecated.
             AppDomain.CurrentDomain.AppendPrivatePath(@"Plugins");
+
+            string pluginsFolder = @".\Plugins\";
+            string pluginsFolderFullPath = Path.GetFullPath(pluginsFolder);
+            string[] pluginSubdirectories = Directory.GetDirectories(pluginsFolderFullPath);
+            foreach (string pluginSubdirectory in pluginSubdirectories)
+            {
+                AppDomain.CurrentDomain.AppendPrivatePath(pluginSubdirectory);
+            }
             
             Bootstrapper bootstrapper = new Bootstrapper();
         }

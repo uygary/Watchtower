@@ -16,13 +16,22 @@ namespace Watchtower.Core
         /// </summary>
         /// <param name="assemblyId">Assembly name.</param>
         /// <param name="imageResourcePath">Path to the image resource in project.</param>
-        /// <returns></returns>
+        /// <returns>BitmapImage generated from the image resource.</returns>
         public static BitmapImage GetPluginIcon(string assemblyId, string imageResourcePath)
         {
             string uriString = string.Format("pack://application:,,,/{0};component/{1}", assemblyId, imageResourcePath);
             Uri uri = new Uri(uriString);
+            return GetPluginIcon(uri);
+        }
 
-            StreamResourceInfo imageResourceInfo = Application.GetResourceStream(uri);
+        /// <summary>
+        /// Generates the plugin icon to be used in Watchtower.
+        /// </summary>
+        /// <param name="imageResoureUri">Uri of the image resource.</param>
+        /// <returns>BitmapImage generated from the image resource.</returns>
+        public static BitmapImage GetPluginIcon(Uri imageResoureUri)
+        {
+            StreamResourceInfo imageResourceInfo = Application.GetResourceStream(imageResoureUri);
             Stream imageStream = imageResourceInfo.Stream;
 
             BitmapImage image = new BitmapImage();
