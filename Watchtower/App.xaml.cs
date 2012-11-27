@@ -21,9 +21,9 @@ namespace Watchtower
             //domain.PrivateBinPath = @"Plugins";
 
             //FIXME: AppendPrivatePath is deprecated.
-            AppDomain.CurrentDomain.AppendPrivatePath(@"Plugins");
-
             string pluginsFolder = @".\Plugins\";
+            AppDomain.CurrentDomain.AppendPrivatePath(pluginsFolder);
+
             string pluginsFolderFullPath = Path.GetFullPath(pluginsFolder);
             string[] pluginSubdirectories = Directory.GetDirectories(pluginsFolderFullPath);
             foreach (string pluginSubdirectory in pluginSubdirectories)
