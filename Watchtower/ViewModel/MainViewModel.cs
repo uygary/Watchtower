@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Ioc;
 
 using Watchtower.Models;
 using Watchtower.Services;
@@ -33,7 +32,7 @@ namespace Watchtower.ViewModels
         /// The <see cref="Status" /> property's name.
         /// </summary>
         public const string StatusPropertyName = "Status";
-        private string _status;
+        private string _status = Constants.Strings.Ready;
         /// <summary>
         /// Sets and gets the Status property.
         /// Changes to that property's value raise the PropertyChanged event. 
@@ -56,7 +55,7 @@ namespace Watchtower.ViewModels
         /// The <see cref="Repositories" /> property's name.
         /// </summary>
         public const string RepositoriesPropertyName = "Repositories";
-        private ObservableCollection<ExtendedRepository> _repositories;
+        private ObservableCollection<ExtendedRepository> _repositories = new ObservableCollection<ExtendedRepository>();
         /// <summary>
         /// Sets and gets the Repositories property.
         /// Changes to that property's value raise the PropertyChanged event. 
@@ -79,12 +78,11 @@ namespace Watchtower.ViewModels
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IDataService dataService)
+        public MainViewModel(IDataService dataService, WorkerService workerService, PluginService pluginService)
         {
             _dataService = dataService;
-            _pluginService = SimpleIoc.Default.GetInstance<PluginService>();
-            _workerService = SimpleIoc.Default.GetInstance<WorkerService>();
-            Status = Constants.Strings.Ready;
+            _workerService = workerService;
+            _pluginService = pluginService;
 
             DeleteCommand = new RelayCommand<object>(DeleteRepository);
             LoadCommand = new RelayCommand(LoadRepositories);
@@ -100,7 +98,6 @@ namespace Watchtower.ViewModels
 
         private void Initialize()
         {
-            Repositories = new ObservableCollection<ExtendedRepository>();
             LoadRepositories();
         }
 

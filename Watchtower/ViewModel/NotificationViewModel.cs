@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
 
 using Watchtower.Models;
 using Watchtower.Services;
@@ -45,10 +44,10 @@ namespace Watchtower.ViewModels
         /// <summary>
         /// Initializes a new instance of the NotificationViewModel class.
         /// </summary>
-        public NotificationViewModel(IDataService dataService)
+        public NotificationViewModel(IDataService dataService, WorkerService workerService)
         {
             _dataService = dataService;
-            _workerService = SimpleIoc.Default.GetInstance<WorkerService>();
+            _workerService = workerService;
             Initialize();
         }
 
