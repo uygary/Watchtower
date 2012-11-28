@@ -27,17 +27,13 @@ namespace Watchtower.Services
 
         private void Initialize()
         {
-            string pluginsFolder = @".\Plugins\";
-            string pluginsFolderFullPath = Path.GetFullPath(pluginsFolder);
-            if (!Directory.Exists(pluginsFolderFullPath))
-                Directory.CreateDirectory(pluginsFolderFullPath);
-            
-            RegisterPlugins(pluginsFolderFullPath);
+            AppDomainSetup appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
+            string privateBinPath = appDomainSetup.PrivateBinPath;
+            string[] pluginDirectoryFullPaths = privateBinPath.Split(';');
 
-            string[] pluginSubdirectories = Directory.GetDirectories(pluginsFolderFullPath);
-            foreach (string pluginSubdirectory in pluginSubdirectories)
+            foreach (string pluginDirectoryFullPath in pluginDirectoryFullPaths)
             {
-                RegisterPlugins(pluginSubdirectory);
+                RegisterPlugins(pluginDirectoryFullPath);
             }
         }
 
