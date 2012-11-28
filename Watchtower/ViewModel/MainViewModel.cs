@@ -120,10 +120,12 @@ namespace Watchtower.ViewModels
 
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
         {
-            if (null != repositories)
+            if (null != exception)
                 Repositories = new ObservableCollection<ExtendedRepository>(repositories);
             else
-                Repositories = new ObservableCollection<ExtendedRepository>();
+            {
+                //TODO: Implement an error display.
+            }
         }
         private void OnWorkerServiceProgressChanged(object sender, ProgressChangedEventArgs e)
         {

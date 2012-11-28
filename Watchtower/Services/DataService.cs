@@ -115,7 +115,8 @@ namespace Watchtower.Services
                 string type = reader.GetString(reader.GetOrdinal("RepoType"));
                 ExtendedRepository repo = new ExtendedRepository(type, path);
                 repo.Name = name;
-                repo.PluginIcon = _pluginService.Plugins[type].PluginIcon;
+                if (_pluginService.Plugins.ContainsKey(type))
+                    repo.PluginIcon = _pluginService.Plugins[type].PluginIcon;
                 result.Add(repo);
             }
 
