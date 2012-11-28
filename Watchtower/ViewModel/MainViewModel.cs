@@ -120,7 +120,7 @@ namespace Watchtower.ViewModels
 
         private void OnGetRepositoriesCompleted(IList<ExtendedRepository> repositories, Exception exception)
         {
-            if (null != exception)
+            if (null == exception)
                 Repositories = new ObservableCollection<ExtendedRepository>(repositories);
             else
             {
