@@ -54,44 +54,8 @@ namespace Watchtower
         }
 
 
-        #region Tray icon related methods
-
-        //private void SwitchToBrightIcon()
-        //{
-        //    Stream imageStream = Application.GetResourceStream(new Uri("pack://application:,,/Images/AoP13.ico")).Stream;
-        //    _trayIcon.Icon = new System.Drawing.Icon(imageStream);
-        //}
-        //private void SwitchToGlossyIcon()
-        //{
-        //    Stream imageStream = Application.GetResourceStream(new Uri("pack://application:,,/Images/AoP13Glossy.ico")).Stream;
-        //    _trayIcon.Icon = new System.Drawing.Icon(imageStream);
-        //}
-
-        private void OnClose(object sender, CancelEventArgs args)
-        {
-            //_trayIcon.Dispose();
-            //_trayIcon = null;
-
-            if (WindowState == WindowState.Maximized)
-            {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Top = Top;
-                Properties.Settings.Default.Left = Left;
-                Properties.Settings.Default.Height = Height;
-                Properties.Settings.Default.Width = Width;
-                Properties.Settings.Default.Maximized = false;
-            }
-            Properties.Settings.Default.Save();
-        }
-
+        #region Window state related methods
+        
         private void OnStateChanged(object sender, EventArgs args)
         {
             if (WindowState == WindowState.Minimized)
@@ -122,23 +86,6 @@ namespace Watchtower
             }
         }
 
-        //private void CheckTrayIcon()
-        //{
-        //    SwitchTrayIcon(IsVisible);
-        //}
-
-        //private void SwitchTrayIcon(bool show)
-        //{
-        //    if (_trayIcon != null)
-        //    {
-        //        //_trayIcon.Visible = show;
-        //        if (show)
-        //            SwitchToBrightIcon();
-        //        else
-        //            SwitchToGlossyIcon();
-        //    }
-        //}
-
         #endregion
 
 
@@ -147,13 +94,52 @@ namespace Watchtower
             WindowState = WindowState.Minimized;
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
+            //_trayIcon.Dispose();
+            //_trayIcon = null;
+
+            //Save window position and size.
+            if (WindowState == WindowState.Maximized)
+            {
+                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                Properties.Settings.Default.Top = RestoreBounds.Top;
+                Properties.Settings.Default.Left = RestoreBounds.Left;
+                Properties.Settings.Default.Height = RestoreBounds.Height;
+                Properties.Settings.Default.Width = RestoreBounds.Width;
+                Properties.Settings.Default.Maximized = true;
+            }
+            else
+            {
+                Properties.Settings.Default.Top = Top;
+                Properties.Settings.Default.Left = Left;
+                Properties.Settings.Default.Height = Height;
+                Properties.Settings.Default.Width = Width;
+                Properties.Settings.Default.Maximized = false;
+            }
+            Properties.Settings.Default.Save();
+
+            //Clear resources.
             SimpleIoc.Default.GetInstance<Watchtower.Views.NotificationWindow>().Close();
             Watchtower.Services.NotificationService nSvc = SimpleIoc.Default.GetInstance<Watchtower.Services.NotificationService>();
-            nSvc._trayIcon.Click -= OnIconClicked;
+            try
+            {
+                nSvc._trayIcon.Click -= OnIconClicked;
+            }
+            catch
+            {
+            }
             nSvc.Dispose();
 
+            //And finally close.
+            base.OnClosed(e);
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (e.Cancel)
+                return;
+
+            //e.Cancel = true;
             base.OnClosing(e);
         }
 

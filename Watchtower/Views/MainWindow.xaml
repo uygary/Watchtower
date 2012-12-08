@@ -10,7 +10,7 @@
     Height="480" Width="400"
     AllowDrop="True"
     Title="Watchtower Source Control Monitor"
-    Closing="OnClose" StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Loaded="OnWindowLoaded"
+    StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged" Loaded="OnWindowLoaded"
     DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <Window.Resources>
